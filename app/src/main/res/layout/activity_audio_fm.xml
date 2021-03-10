@@ -12,6 +12,8 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/fm_toolbar"
+        app:title="白噪音电台"
+        app:titleTextColor="#FFFFFF"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#0d1220"
@@ -20,9 +22,9 @@
 
     <ImageView
         android:id="@+id/fm_album_img"
-        android:layout_width="220dp"
-        android:layout_height="220dp"
-        android:layout_marginTop="50dp"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:layout_marginTop="30dp"
         android:layout_gravity="center_horizontal"/>
 
     <TextView
@@ -33,14 +35,14 @@
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:text="The Weepies"
-        android:textSize="26sp"
+        android:textSize="24sp"
         android:textColor="#FFFFFF"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="60dp">
+        android:layout_marginTop="40dp">
 
         <TextView
             android:id="@+id/fm_time_left"
@@ -82,7 +84,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="25dp"
         android:orientation="horizontal"
         android:gravity="center">
 
@@ -99,7 +101,8 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginLeft="35dp"
-            android:background="@drawable/ic_fm_next" />
+            android:background="@drawable/ic_fm_next"
+            android:clickable="true"/>
 
     </LinearLayout>
 
