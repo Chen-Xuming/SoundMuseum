@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
+
+
+    <!-- 裁剪器 -->
+    <!--Editor Screen-->
+    <color name="editor_start_end_value_text_color">#f27127</color>
+    <color name="editor_start_end_title_text_color">#91939a</color>
+    <color name="editor_song_title_color">#FFFFFF</color>
+    <color name="editor_playpause_background">#FFFFFF</color>
+    <color name="editor_save_text_color">#FFFFFF</color>
+    <color name="editor_save_button_color">#14548c</color>
+    <color name="editor_options_background">#14548c</color>
+    <color name="edior_options_text_color">#FFFFFF</color>
+    <color name="editor_zoom_color">#FFFFFF</color>
+    <color name="editor_waveform_bg_color">#0d111a</color>
+    <color name="editor_grind_paint_color">#8dffffff</color>
+    <color name="editor_border_line_paint_color">#8dffffff</color>
+    <color name="editor_main_background">#0d1220</color>
+    <color name="editor_play_back_line_paint_color">#ffffff</color>
+    <color name="editor_selected_rectangle_color">#68afadad</color>
+    <color name="editor_mUnselectedline_color">#616161</color>
+    <color name="editor_toast_color">#f27127</color>
+    <color name="editor_playpause_arrow_color">#0d1220</color>
+
+    <color name="wave_color">#bfb6c0dc</color>
+
+    <!--Misc-->
+    <color name="blueNavy">#2a334d</color>
+    <color name="blue">#175da9</color>
+    <color name="gray">#c1c2c6</color>
+    <color name="whiteHint" tools:keep="@color/whiteHint">#90ffffff</color>
+    <color name="whiteHintLight">#30ffffff</color>
+    <color name="whiteTransparent">#60ffffff</color>
+    <color name="white">#ffffff</color>
+    <color name="transparent">#00000000</color>
+    <color name="app_decorview_color">#090c15</color>
+    <color name="app_default_background">#151a28</color>
+</resources>

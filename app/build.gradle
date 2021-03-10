@@ -1,0 +1,96 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "28.0.3"
+    defaultConfig {
+        applicationId "com.example.soundmuseum"
+        minSdkVersion 22
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        disable 'RestrictedApi'
+    }
+
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
+
+    // android架构
+    splits {
+        abi {
+            enable true
+            reset()
+            include "armeabi", "armeabi-v7a", "armeabi-v8a"
+            universalApk true
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    //noinspection GradleCompatible
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:cardview-v7:26.0.0'
+    implementation 'com.android.support:design:26.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    // 百度地图API
+    implementation files('libs/BaiduLBS_Android.jar')
+
+    // 音频格式转换
+    implementation 'com.github.imesut:AndroidAudioConverter:0.0.9-SNAPSHOT'
+
+    // for 音频剪切
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.github.matecode:Snacky:1.0.2'
+    implementation "org.jetbrains.anko:anko:$anko_version"
+    implementation "org.jetbrains.anko:anko-commons:$anko_version"
+    implementation "org.jetbrains.anko:anko-sqlite:$anko_version"
+    implementation 'com.github.ozodrukh:CircularReveal:1.1.0'
+
+    //Glide 图片处理
+    implementation 'jp.wasabeef:glide-transformations:4.1.0'    // 图片处理
+
+    // Play_Pause_Button
+    implementation 'com.github.Lauzy:PlayPauseView:1.0.7'
+
+    // 状态栏美化
+    implementation 'com.jaeger.statusbarutil:library:1.5.1'
+
+}
+
+/*
+        统一 support 版本：26.0.0
+ */
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            if (!requested.name.startsWith("multidex")) {
+                //这里指定需要统一的依赖版本,这里统一为26.0.0-alpha1
+                details.useVersion '26.0.0'
+            }
+        }
+    }
+}

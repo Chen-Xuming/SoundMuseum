@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">SoundMuseum</string>
+
+
+    <string name="editor_selected_line_paint_color">#565656</string>
+    <string name="application_permission">应用权限</string>
+    <string name="permission_description">我们需要获取一些权限，以保证应用正常使用</string>
+    <string name="menu_set_as_ringtone">Set as Ringtone</string>
+    <string name="menu_set_as_notification">Set As Notification</string>
+    <string name="menu_set_as_alarm">Set As Alarm</string>
+    <string name="menu_save_in_internal_storage">Save in Internal Storage</string>
+    <string name="context_menu_contact">Assign to Contact</string>
+
+</resources>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btn_map_act"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="声音地图" />
+
+    <Button
+        android:id="@+id/btn_format_convert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="格式转换"
+        android:layout_weight="1"/>
+
+    <Button
+        android:id="@+id/btn_kotlin_act"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Kotlin"
+        android:layout_weight="1"/>
+
+</LinearLayout>
