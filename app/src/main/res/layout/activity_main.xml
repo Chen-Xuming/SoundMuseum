@@ -25,7 +25,7 @@
         android:id="@+id/btn_kotlin_act"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Kotlin"
+        android:text="测试专用"
         android:layout_weight="1"/>
 
 </LinearLayout>

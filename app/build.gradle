@@ -24,6 +24,9 @@ android {
 
     lintOptions {
         disable 'RestrictedApi'
+        disable 'MissingTranslation' //无视字符串缺少本地化的情况
+        disable 'ExtraTranslation'//无视多做了本地化的字符串
+
     }
 
     compileOptions {
@@ -78,6 +81,8 @@ dependencies {
     // 状态栏美化
     implementation 'com.jaeger.statusbarutil:library:1.5.1'
 
+    // mapActivity's popupView
+    implementation 'com.sothree.slidinguppanel:library:3.4.0'
 }
 
 /*

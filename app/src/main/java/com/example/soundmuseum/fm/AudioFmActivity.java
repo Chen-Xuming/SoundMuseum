@@ -69,7 +69,7 @@ public class AudioFmActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(mediaPlayer != null && mediaPlayer.isPlaying()){
                     mediaPlayer.pause();
-                    mediaPlayer.release();
+                    //mediaPlayer.release();
                 }
                 finish();
             }
@@ -208,5 +208,14 @@ public class AudioFmActivity extends AppCompatActivity {
             }
         }
         return super.onMenuOpened(featureId, menu);
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        if(mediaPlayer != null && mediaPlayer.isPlaying()){
+            mediaPlayer.pause();
+            mediaPlayer.release();
+        }
     }
 }
