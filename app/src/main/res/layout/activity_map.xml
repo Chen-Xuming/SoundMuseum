@@ -6,9 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="bottom"
-    sothree:umanoPanelHeight="30dp"
+    sothree:umanoPanelHeight="102dp"
     sothree:umanoShadowHeight="4dp"
-    sothree:umanoOverlay="false">
+    sothree:umanoOverlay="false"
+    sothree:umanoDragView="@id/map_dragview">
 
     <!-- main content -->
     <FrameLayout
@@ -25,33 +26,110 @@
 
     <!-- slidingUp layout -->
     <LinearLayout
-        android:id="@+id/map_dragview"
+        android:clickable="true"
+        android:focusable="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:clickable="true"
-        android:focusable="false"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:background="#3B2196F3"
+        xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <ImageView
-            android:id="@+id/map_dragview_show_img"
+        <LinearLayout
+            android:id="@+id/map_dragview"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:background="#2196F3"/>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="落日余晖"
+                android:textSize="22sp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp">
+
+                <com.freedom.lauzy.playpauseviewlib.PlayPauseView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_gravity="center_vertical"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp">
+
+                    <android.support.v7.widget.AppCompatSeekBar
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/test_seekbar" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="00:00"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_below="@+id/test_seekbar"
+                        android:gravity="center"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="00:00"
+                        android:layout_below="@+id/test_seekbar"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="12dp"
+                        android:gravity="center"/>
+
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+
 
         <TextView
-            android:id="@+id/map_info_text"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="faker发布于2020.12.30"/>
 
-            android:text="Info"
-            android:textSize="30dp"
-            android:gravity="center"
-            android:background="#FFFFFF"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/place"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="广东省珠海市金湾区"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textSize="50sp"
+            android:clickable="true"
+            android:text="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"/>
 
     </LinearLayout>
-
 
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
