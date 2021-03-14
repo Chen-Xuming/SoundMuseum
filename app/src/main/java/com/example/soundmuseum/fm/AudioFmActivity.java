@@ -215,7 +215,8 @@ public class AudioFmActivity extends AppCompatActivity {
         super.onPause();
         if(mediaPlayer != null && mediaPlayer.isPlaying()){
             mediaPlayer.pause();
-            mediaPlayer.release();
+            fm_playPauseView.pause();
+            //mediaPlayer.release();
         }
     }
 }

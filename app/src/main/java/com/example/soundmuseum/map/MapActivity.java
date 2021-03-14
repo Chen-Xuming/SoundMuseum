@@ -17,15 +17,18 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.map.UiSettings;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.model.LatLngBounds;
 import com.baidu.mapsdkexample.util.clusterutil.clustering.Cluster;
 import com.baidu.mapsdkexample.util.clusterutil.clustering.ClusterManager;
+import com.baidu.mapsdkexample.util.clusterutil.projection.Point;
 import com.example.soundmuseum.R;
 import com.freedom.lauzy.playpauseviewlib.PlayPauseView;
 import com.jaeger.library.StatusBarUtil;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -45,8 +48,11 @@ public class MapActivity extends AppCompatActivity {
     private BaiduMap mBaiduMap;
 
     private MediaPlayer mediaPlayer;
+    private boolean isPlayerPrepared = false;
 
-    private ClusterManager<MapItem> mClusterManager;
+    private ClusterManager<MapModel> mClusterManager;
+
+    private MapModel current_model = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +68,6 @@ public class MapActivity extends AppCompatActivity {
         textView_author_date = findViewById(R.id.map_author_and_date);
         textView_place = findViewById(R.id.map_place);
         textView_content = findViewById(R.id.map_content);
-
 
 
         /*
@@ -86,14 +91,18 @@ public class MapActivity extends AppCompatActivity {
                 mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
             }
         });
-        mLayout.setAnchorPoint(0.6f);
-        //mLayout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
+        mLayout.setAnchorPoint(0.5f);
+        mLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);  // 未点击任意音频之前隐藏
 
         /*
                 地图初始化
          */
         mMapView = (MapView) findViewById(R.id.map_mapview);
+        mMapView.showZoomControls(false);                   // 不显示缩放按钮
         mBaiduMap = mMapView.getMap();
+
+        UiSettings uiSettings = mBaiduMap.getUiSettings();
+        uiSettings.setRotateGesturesEnabled(false);
 
         mBaiduMap.setOnMapLoadedCallback(new BaiduMap.OnMapLoadedCallback() {
             @Override
@@ -102,16 +111,51 @@ public class MapActivity extends AppCompatActivity {
                 initCluster();
                 // 加载点
                 loadPoints();
+                // 设置初始视图范围
+                LatLng center = new LatLng(33.513286, 109.552645);
+                MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.newLatLngZoom(center, 5.5f);
+                mBaiduMap.setMapStatus(mapStatusUpdate);
+            }
+        });
+
+
+        /*
+                播放按钮监听
+         */
+        playPauseView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(playPauseView.isPlaying()){
+                    playPauseView.pause();
+                    if(mediaPlayer!= null && mediaPlayer.isPlaying()){
+                        mediaPlayer.pause();
+                    }
+                }else{
+                    if(isPlayerPrepared && !mediaPlayer.isPlaying()){
+                        mediaPlayer.start();
+                        playPauseView.play();
+                    }
+                }
             }
         });
     }
 
     // 大批量加载标记
     private void loadPoints(){
-        List<MapItem> items = new ArrayList<MapItem>();
+        List<MapModel> items = new ArrayList<MapModel>();
         for(int i = 0; i < Points.points.length; i++){
-            LatLng point = new LatLng(Points.points[i].getLat(), Points.points[i].getLng());
-            items.add(new MapItem(point));
+            MapModel mapModel = new MapModel(
+                    Points.points[i].getLat(),
+                    Points.points[i].getLng(),
+                    Points.titles[i % 10],
+                    "3:21",
+                    "chen",
+                    "2020.10.2",
+                    "江苏省苏州市",
+                    "荆州机场今年春节期间新建成通航，很多老人在家人陪伴下来看航班起降。我们也把它当成晚饭后的消遣。晚上九点左右，机场已经关闭了，没有航班，它旁边的田野里蛙声响成一片。",
+                    Points.uris[i % 10]
+            );
+            items.add(mapModel);
         }
 
         Log.d("loadPoints", "" + Points.points.length);
@@ -121,19 +165,19 @@ public class MapActivity extends AppCompatActivity {
 
     private void initCluster() {
         // 定义点聚合管理类ClusterManager
-        mClusterManager = new ClusterManager<MapItem>(this, mBaiduMap);
+        mClusterManager = new ClusterManager<MapModel>(this, mBaiduMap);
         mBaiduMap.setOnMapStatusChangeListener(mClusterManager);
         mBaiduMap.setOnMarkerClickListener(mClusterManager);
 
         mClusterManager
-                .setOnClusterClickListener(new ClusterManager.OnClusterClickListener<MapItem>() {
+                .setOnClusterClickListener(new ClusterManager.OnClusterClickListener<MapModel>() {
 
                     @Override
-                    public boolean onClusterClick(Cluster<MapItem> cluster) {
-                        List<MapItem> items = (List<MapItem>) cluster.getItems();
+                    public boolean onClusterClick(Cluster<MapModel> cluster) {
+                        List<MapModel> items = (List<MapModel>) cluster.getItems();
                         LatLngBounds.Builder builder2 = new LatLngBounds.Builder();
                         int i=0;
-                        for(MapItem myItem : items){
+                        for(MapModel myItem : items){
                             builder2 = builder2.include(myItem.getPosition());
                         }
                         LatLngBounds latlngBounds = builder2.build();
@@ -143,15 +187,62 @@ public class MapActivity extends AppCompatActivity {
                     }
                 });
         mClusterManager.setOnClusterItemClickListener(
-                new ClusterManager.OnClusterItemClickListener<MapItem>() {
+                new ClusterManager.OnClusterItemClickListener<MapModel>() {
                     @Override
-                    public boolean onClusterItemClick(MapItem item) {
-                        Toast.makeText(MapActivity.this, "点击单个Item", Toast.LENGTH_SHORT)
-                                .show();
+                    public boolean onClusterItemClick(MapModel item) {
+                        if(item == current_model) return false;
+                        current_model = item;
+                        loadSong(item);
                         return false;
                     }
                 });
     }
+
+    /*
+            加载歌曲
+     */
+    private void loadSong(MapModel mapModel){
+//        if(mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN){
+//            mLayout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
+//        }
+
+        mLayout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
+
+        textView_title.setText(mapModel.getTitle());
+        textView_time_right.setText(mapModel.getS_duration());
+        textView_author_date.setText(mapModel.getAuthor_id() + " / " + mapModel.getS_time());
+        textView_place.setText(mapModel.getAddress());
+        textView_content.setText(mapModel.getContent());
+
+        if(mediaPlayer != null){
+            if(mediaPlayer.isPlaying()) {
+                mediaPlayer.pause();
+                playPauseView.pause();
+            }
+            mediaPlayer.release();
+            mediaPlayer = null;
+            isPlayerPrepared = false;
+        }
+        mediaPlayer = new MediaPlayer();
+        mediaPlayer.setLooping(true);
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                isPlayerPrepared = true;
+                mediaPlayer.start();
+                playPauseView.play();
+            }
+        });
+        try {
+            if(mapModel.getAudio_url() != null){
+                mediaPlayer.setDataSource(mapModel.getAudio_url());
+                mediaPlayer.prepareAsync();
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -159,7 +250,21 @@ public class MapActivity extends AppCompatActivity {
                 (mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
             mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         } else {
+            if(mediaPlayer != null && mediaPlayer.isPlaying()){
+                mediaPlayer.pause();
+                playPauseView.pause();
+            }
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        if(mediaPlayer != null && mediaPlayer.isPlaying()){
+            mediaPlayer.pause();
+            playPauseView.pause();
+            //mediaPlayer.release();
         }
     }
 }

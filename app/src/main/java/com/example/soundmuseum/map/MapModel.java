@@ -1,48 +1,63 @@
 package com.example.soundmuseum.map;
 
-public class MapModel {
-    private double lng;     // 经度
-    private double lat;     // 纬度
-    private String title;   // 标题
-    private int duration;   // 音频时长
-    private String id;      // 作者
-    private String time;    // 发布日期
-    private String address; // 音频发布地址
-    private String content; // 内容
+import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapsdkexample.util.clusterutil.clustering.ClusterItem;
+import com.example.soundmuseum.R;
 
-    public MapModel(double lng, double lat, String title, int duration, String id, String time, String address, String content) {
-        this.lng = lng;
-        this.lat = lat;
+// 耳聆网外链 https://down.ear0.com:3321/preview?soundid=20881&type=mp3
+
+public class MapModel implements ClusterItem {
+
+    private LatLng mPosition;
+
+    private String title;               // 标题
+    private String s_duration;          // 音频时长(string)
+    private String author_id;           // 作者id
+    private String s_time;                // 发布时间
+    private String address;             // 发布地点
+    private String content;             // 内容
+
+    private String audio_url;           // 音频链接
+
+    public MapModel(double lat, double lng, String title, String duration, String author_id, String time, String address, String content, String audio_url) {
         this.title = title;
-        this.duration = duration;
-        this.id = id;
-        this.time = time;
+        this.s_duration = duration;
+        this.author_id = author_id;
+        this.s_time = time;
         this.address = address;
         this.content = content;
+        this.audio_url = audio_url;
+
+        mPosition = new LatLng(lat, lng);
     }
 
-    public double getLng() {
-        return lng;
+    @Override
+    public LatLng getPosition() {
+        return mPosition;
     }
 
-    public double getLat() {
-        return lat;
+    @Override
+    public BitmapDescriptor getBitmapDescriptor() {
+        return BitmapDescriptorFactory
+                .fromResource(R.drawable.baidumap_marker);
     }
 
     public String getTitle() {
         return title;
     }
 
-    public int getDuration() {
-        return duration;
+    public String getS_duration() {
+        return s_duration;
     }
 
-    public String getId() {
-        return id;
+    public String getAuthor_id() {
+        return author_id;
     }
 
-    public String getTime() {
-        return time;
+    public String getS_time() {
+        return s_time;
     }
 
     public String getAddress() {
@@ -51,5 +66,9 @@ public class MapModel {
 
     public String getContent() {
         return content;
+    }
+
+    public String getAudio_url() {
+        return audio_url;
     }
 }

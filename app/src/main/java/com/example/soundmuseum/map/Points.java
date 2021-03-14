@@ -17,6 +17,32 @@ public class Points {
         return lat;
     }
 
+    public static String [] titles = {
+            "须弥山大佛下的钟声",
+            "卫塞节秋元撞钟",
+            "乌鸦叫声",
+            "老奶奶聊天",
+            "佛堂念诵地藏菩萨经",
+            "小饭店环境氛围",
+            "山中的钟声",
+            "弹琴卖艺的盲人演奏家",
+            "打板戏票儿",
+            "夜市录音"
+    };
+
+    public static String [] uris = {
+        "https://down.ear0.com:3321/preview?soundid=33170&type=mp3",
+            "https://down.ear0.com:3321/preview?soundid=33201&type=mp3",
+            "https://down.ear0.com:3321/preview?soundid=33196&type=mp3",
+            "https://down.ear0.com:3321/preview?soundid=33199&type=mp3",
+            "https://down.ear0.com:3321/preview?soundid=33200&type=mp3",
+            "https://down.ear0.com:3321/preview?soundid=33228&type=mp3",
+            "https://down.ear0.com:3321/preview?soundid=33310&type=mp3",
+            "https://down.ear0.com:3321/preview?soundid=33347&type=mp3",
+            "https://down.ear0.com:3321/preview?soundid=33397&type=mp3",
+            "https://down.ear0.com:3321/preview?soundid=33396&type=mp3",
+    };
+
     public static Points [] points = {
             new Points(102.476908,23.185778),
             new Points(117.9269993,36.45712788),
