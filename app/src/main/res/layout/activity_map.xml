@@ -2,13 +2,15 @@
 
 <com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:sothree="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     android:id="@+id/map_sliding_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="bottom"
-    sothree:umanoPanelHeight="102dp"
+    sothree:umanoPanelHeight="108dp"
     sothree:umanoShadowHeight="4dp"
-    sothree:umanoOverlay="false"
+    sothree:umanoOverlay="true"
     sothree:umanoDragView="@id/map_dragview">
 
     <!-- main content -->
@@ -25,14 +27,12 @@
     </FrameLayout>
 
     <!-- slidingUp layout -->
-    <LinearLayout
-        android:clickable="true"
-        android:focusable="true"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
-        android:background="#3B2196F3"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        android:background="#CDFFFFFF">
 
         <LinearLayout
             android:id="@+id/map_dragview"
@@ -41,95 +41,144 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/map_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="落日余晖"
-                android:textSize="22sp"
+                android:textSize="20sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="15dp"
+                android:textColor="#000000"/>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginBottom="8dp"
+                android:background="#32FFFFFF"
+                app:cardElevation="5dp"
+                app:cardCornerRadius="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center">
+
+                    <com.freedom.lauzy.playpauseviewlib.PlayPauseView
+                        android:id="@+id/map_playpauseview"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_gravity="center_vertical"
+                        app:btn_color="#BA2196F3"
+                        app:bg_color="#439B9A9A"
+                        android:elevation="5dp"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp">
+
+                        <android.support.v7.widget.AppCompatSeekBar
+                            android:layout_marginTop="12dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/map_seekbar"
+                            android:thumb="@drawable/map_seekbar_thumb_style"
+                            android:progressDrawable="@drawable/map_seekbar_progress_style"
+                            android:maxHeight="2dp"
+                            android:minHeight="2dp"/>
+
+                        <TextView
+                            android:id="@+id/map_time_left"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="00:00"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_marginLeft="12dp"
+                            android:layout_below="@+id/map_seekbar"
+                            android:gravity="center" />
+
+                        <TextView
+                            android:id="@+id/map_time_right"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="00:00"
+                            android:layout_below="@+id/map_seekbar"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="10dp"
+                            android:gravity="center" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            app:cardElevation="5dp"
+            app:cardCornerRadius="5dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:orientation="horizontal"
-                android:layout_marginTop="5dp">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="#48FFFFFF">
 
-                <com.freedom.lauzy.playpauseviewlib.PlayPauseView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_gravity="center_vertical"/>
-
-                <RelativeLayout
+                <TextView
+                    android:id="@+id/map_author_and_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:text="faker / 2020.12.30"
+                    android:textColor="#88414141"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
                     android:layout_marginTop="5dp"
-                    android:layout_marginRight="10dp"
                     android:layout_marginLeft="10dp">
-
-                    <android.support.v7.widget.AppCompatSeekBar
-                        android:layout_marginTop="5dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/test_seekbar" />
-
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/place"/>
                     <TextView
+                        android:id="@+id/map_place"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="00:00"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentLeft="true"
-                        android:layout_marginLeft="10dp"
-                        android:layout_below="@+id/test_seekbar"
-                        android:gravity="center"/>
+                        android:text="广东省珠海市金湾区"
+                        android:textColor="#88414141"/>
+                </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="00:00"
-                        android:layout_below="@+id/test_seekbar"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="12dp"
-                        android:gravity="center"/>
+                <TextView
+                    android:id="@+id/map_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:textSize="20sp"
+                    android:textColor="#CB000000"
+                    android:text="想家，想念雨天里坐在坐在窗前安静看书的快乐。"/>
 
-                </RelativeLayout>
+
             </LinearLayout>
-        </LinearLayout>
 
+        </android.support.v7.widget.CardView>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:text="faker发布于2020.12.30"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp">
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:background="@drawable/place"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="广东省珠海市金湾区"/>
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:textSize="50sp"
-            android:clickable="true"
-            android:text="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"/>
 
     </LinearLayout>
-
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
