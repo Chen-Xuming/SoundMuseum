@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     tools:context=".fm.AudioFmActivity"
     android:orientation="vertical"
-    android:background="#0d1220">
+    android:background="#686868">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/fm_toolbar"
@@ -16,9 +16,8 @@
         app:titleTextColor="#FFFFFF"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#0d1220"
-        app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
-        android:theme="@style/AppTheme.ActionBar"/>
+        android:background="#686868"
+        app:navigationIcon="@drawable/ic_arrow_back_white_24dp" />
 
     <ImageView
         android:id="@+id/fm_album_img"
@@ -93,7 +92,7 @@
             android:layout_width="55dp"
             android:layout_height="55dp"
             android:layout_marginLeft="80dp"
-            app:btn_color="#0d1220"
+            app:btn_color="#686868"
             android:layout_gravity="center_horizontal"/>
 
         <ImageView

@@ -1,11 +1,13 @@
 package com.example.soundmuseum.map;
 
 import android.media.MediaPlayer;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.util.Log;
 import android.view.View;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +34,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class MapActivity extends AppCompatActivity {
 
@@ -49,6 +52,7 @@ public class MapActivity extends AppCompatActivity {
 
     private MediaPlayer mediaPlayer;
     private boolean isPlayerPrepared = false;
+    private Handler mHandler;
 
     private ClusterManager<MapModel> mClusterManager;
 
@@ -69,6 +73,8 @@ public class MapActivity extends AppCompatActivity {
         textView_place = findViewById(R.id.map_place);
         textView_content = findViewById(R.id.map_content);
 
+
+        mHandler = new Handler();
 
         /*
                 SlidingUpPanel初始化
@@ -134,10 +140,43 @@ public class MapActivity extends AppCompatActivity {
                     if(isPlayerPrepared && !mediaPlayer.isPlaying()){
                         mediaPlayer.start();
                         playPauseView.play();
+                        mHandler.postDelayed(mRunnable, 1000);
                     }
                 }
             }
         });
+
+        /*
+            进度条监听
+        */
+        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if(fromUser) {
+                    mediaPlayer.seekTo(progress);
+
+                    if(!mediaPlayer.isPlaying()){
+                        int run_time = mediaPlayer.getCurrentPosition();
+                        String run_str = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) run_time),
+                                TimeUnit.MILLISECONDS.toSeconds((long) run_time) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) run_time)));
+                        textView_time_left.setText(run_str);
+                    }
+
+                    mHandler.postDelayed(mRunnable, 1000);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
     }
 
     // 大批量加载标记
@@ -228,9 +267,20 @@ public class MapActivity extends AppCompatActivity {
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
+
+                textView_time_left.setText("00:00");
+                seekbar.setProgress(0);
+                seekbar.setMax(mediaPlayer.getDuration());
+
+                int total_time = mediaPlayer.getDuration();
+                String total_str = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) total_time),
+                        TimeUnit.MILLISECONDS.toSeconds((long) total_time) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) total_time)));
+                textView_time_right.setText(total_str);
+
                 isPlayerPrepared = true;
                 mediaPlayer.start();
                 playPauseView.play();
+                mHandler.postDelayed(mRunnable, 1000);
             }
         });
         try {
@@ -267,4 +317,27 @@ public class MapActivity extends AppCompatActivity {
             //mediaPlayer.release();
         }
     }
+
+    /*
+            播放进度（seekbar, 时间）更新
+     */
+    private Runnable mRunnable = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                    mHandler.postDelayed(mRunnable, 1000);
+
+                    seekbar.setProgress(mediaPlayer.getCurrentPosition());
+
+                    int run_time = mediaPlayer.getCurrentPosition();
+                    String run_str = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) run_time),
+                            TimeUnit.MILLISECONDS.toSeconds((long) run_time) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) run_time)));
+                    textView_time_left.setText(run_str);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
 }

@@ -2,6 +2,7 @@ package com.example.soundmuseum.fm;
 
 import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatSeekBar;
@@ -10,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -22,6 +24,7 @@ import com.jaeger.library.StatusBarUtil;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.concurrent.TimeUnit;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import jp.wasabeef.glide.transformations.CropCircleWithBorderTransformation;
@@ -42,6 +45,7 @@ public class AudioFmActivity extends AppCompatActivity {
 
     private MediaPlayer mediaPlayer;
     private boolean isPlayerPrepared = false;
+    private Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +61,8 @@ public class AudioFmActivity extends AppCompatActivity {
         fm_seekbar = findViewById(R.id.fm_seekbar);
         fm_playPauseView = findViewById(R.id.fm_play_pause_btn);
         fm_next_song = findViewById(R.id.fm_next_img);
+
+        mHandler = new Handler();
 
         //////////// toolbar 初始化
         Toolbar toolbar = (Toolbar) findViewById(R.id.fm_toolbar);
@@ -88,8 +94,40 @@ public class AudioFmActivity extends AppCompatActivity {
                     if(isPlayerPrepared && !mediaPlayer.isPlaying()){
                         mediaPlayer.start();
                         fm_playPauseView.play();
+                        mHandler.postDelayed(mRunnable, 1000);
                     }
                 }
+            }
+        });
+
+        /*
+            进度条监听
+        */
+        fm_seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if(fromUser) {
+                    mediaPlayer.seekTo(progress);
+
+                    if(!mediaPlayer.isPlaying()){
+                        int run_time = mediaPlayer.getCurrentPosition();
+                        String run_str = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) run_time),
+                                TimeUnit.MILLISECONDS.toSeconds((long) run_time) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) run_time)));
+                        fm_time_left.setText(run_str);
+                    }
+
+                    mHandler.postDelayed(mRunnable, 1000);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
 
@@ -129,9 +167,6 @@ public class AudioFmActivity extends AppCompatActivity {
 
         fm_time_right.setText(current_song.getDuration());
 
-        // 圆形头像, 并加白边框
-        //RequestOptions options = new RequestOptions()
-        //        .transform(new CropCircleWithBorderTransformation(4, Color.WHITE));
         // 圆角图片
         RequestOptions options = new RequestOptions()
                 .transform(new RoundedCornersTransformation(20, 0));
@@ -146,9 +181,21 @@ public class AudioFmActivity extends AppCompatActivity {
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
+
+                fm_time_left.setText("00:00");
+                fm_seekbar.setProgress(0);
+                fm_seekbar.setMax(mediaPlayer.getDuration());
+
+                int total_time = mediaPlayer.getDuration();
+                String total_str = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) total_time),
+                        TimeUnit.MILLISECONDS.toSeconds((long) total_time) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) total_time)));
+                fm_time_right.setText(total_str);
+
                 isPlayerPrepared = true;
                 mediaPlayer.start();
                 fm_playPauseView.play();
+
+                mHandler.postDelayed(mRunnable, 1000);
             }
         });
 
@@ -172,51 +219,34 @@ public class AudioFmActivity extends AppCompatActivity {
     }
 
 
-
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        //load the file of menu that you created
-        getMenuInflater().inflate(R.menu.fm_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.fm_menu_study) {
-            //TODO do everything what you want
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
-    }
-
-    // 让菜单同时显示图标和文字
-    @Override
-    public boolean onMenuOpened(int featureId, Menu menu) {
-        if (menu != null) {
-            if (menu.getClass().getSimpleName().equalsIgnoreCase("MenuBuilder")) {
-                try {
-                    Method method = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
-                    method.setAccessible(true);
-                    method.invoke(menu, true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return super.onMenuOpened(featureId, menu);
-    }
-
     @Override
     protected void onPause(){
         super.onPause();
-        if(mediaPlayer != null && mediaPlayer.isPlaying()){
-            mediaPlayer.pause();
-            fm_playPauseView.pause();
-            //mediaPlayer.release();
-        }
+//        if(mediaPlayer != null && mediaPlayer.isPlaying()){
+//            mediaPlayer.pause();
+//            fm_playPauseView.pause();
+//            //mediaPlayer.release();
+//        }
     }
+
+    /*
+            播放进度（seekbar, 时间）更新
+     */
+    private Runnable mRunnable = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                    mHandler.postDelayed(mRunnable, 1000);
+                    fm_seekbar.setProgress(mediaPlayer.getCurrentPosition());
+                    int run_time = mediaPlayer.getCurrentPosition();
+                    String run_str = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) run_time),
+                            TimeUnit.MILLISECONDS.toSeconds((long) run_time) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) run_time)));
+                    fm_time_left.setText(run_str);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
 }
