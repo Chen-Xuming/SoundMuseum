@@ -16,7 +16,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".DemoActivity"></activity>
+        <activity android:name=".ToolActivity"></activity>
+        <activity android:name=".DrawerActivity" />
+        <activity android:name=".DemoActivity" />
         <activity android:name=".fm.AudioFmActivity" />
         <activity android:name=".TestKotlinActivity" />
         <activity android:name=".map.MapActivity" /> <!-- 百度地图API -->
