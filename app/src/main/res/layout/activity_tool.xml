@@ -177,7 +177,7 @@
         android:id="@+id/toolbox_db_measure"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#D0DF8803"
+        android:background="#D0FFA620"
         android:layout_margin="15dp"
         android:elevation="10dp"
         app:cardCornerRadius="10dp"
@@ -187,7 +187,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="#D0DF8803">
+            android:background="#D0FFA620">
 
             <LinearLayout
                 android:layout_width="match_parent"

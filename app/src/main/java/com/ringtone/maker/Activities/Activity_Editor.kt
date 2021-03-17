@@ -179,9 +179,13 @@ class Activity_Editor : AppCompatActivity(), MarkerView.MarkerListener, com.ring
             pickFile()
         } else {
             // remove mp3 part
-            val newtitle: String
-            if (title!!.contains(EXTENSION_MP3)) newtitle = title.replace(EXTENSION_MP3, "") else newtitle = title.toString()
-            Editor_song_title!!.text = newtitle
+            //val newtitle: String
+            // (title!!.contains(EXTENSION_MP3)) newtitle = title.replace(EXTENSION_MP3, "") else newtitle = title.toString()
+            //Editor_song_title!!.text = newtitle
+
+            Editor_song_title!!.text = title;
+            Log.d("Editor_song_title", Editor_song_title!!.text.toString())
+            Log.d("Editor_song_title", title)
             mFilename = path
 
             if (mSoundFile == null) loadFromFile() else mHandler!!.post { this.finishOpeningSoundFile() }

@@ -10,13 +10,9 @@ import android.widget.Button;
 
 import com.example.soundmuseum.fm.AudioFmActivity;
 import com.example.soundmuseum.map.MapActivity;
+import com.vincent.filepicker.activity.AudioPickActivity;
 
 import java.io.File;
-
-import cafe.adriel.androidaudioconverter.AndroidAudioConverter;
-import cafe.adriel.androidaudioconverter.callback.IConvertCallback;
-import cafe.adriel.androidaudioconverter.model.AudioFormat;
-import cafe.adriel.androidaudioconverter.model.BitRate;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         btn_format.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 audioFormatConvert();
             }
         });
@@ -59,43 +56,9 @@ public class MainActivity extends AppCompatActivity {
     void audioFormatConvert(){
         File flacFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() +
                 "/Recordings/Standard Recordings/FormatTest.flac");
+
+
         Log.d("file-name", flacFile.getAbsolutePath());
-        IConvertCallback callback = new IConvertCallback() {
-            @Override
-            public void onSuccess(File convertedFile) {
-                Log.d("convert-file-info", convertedFile.getPath());
-                // So fast? Love it!
-            }
-            @Override
-            public void onFailure(Exception error) {
-                error.printStackTrace();
-                Log.d("convert-file-info", "error");
-                // Oops! Something went wrong
-            }
-        };
-        AndroidAudioConverter.with(this)
-                // Your current audio file
-                .setFile(flacFile)
 
-                // Your desired audio format
-                .setFormat(AudioFormat.MP3)
-
-                // An optional method for your desired sample rate
-                .setSampleRate(16000)
-                // .setSampleRate(16000) // when not used original sample rate is kept.
-
-                // An optional method for your desired bitrate
-                .setBitRate(BitRate.s16)
-                // .setBitRate(BitRate.s16) // when not used original bitrate is kept.
-
-                //An optional method for if output is desired as mono channel or as original
-                .setMono(true)
-                // .setMono(true) // when not used original channel configuration is kept.
-
-                // An callback to know when conversion is finished
-                .setCallback(callback)
-
-                // Start conversion
-                .convert();
     }
 }

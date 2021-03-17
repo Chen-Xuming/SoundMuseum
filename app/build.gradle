@@ -62,7 +62,7 @@ dependencies {
     implementation files('libs/BaiduLBS_Android.jar')
 
     // 音频格式转换
-    implementation 'com.github.imesut:AndroidAudioConverter:0.0.9-SNAPSHOT'
+    //implementation 'com.github.imesut:AndroidAudioConverter:0.0.9-SNAPSHOT'
 
     // for 音频剪切
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -83,6 +83,9 @@ dependencies {
 
     // mapActivity's popupView
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
+
+    // 文件选择器
+    implementation 'com.github.Chen-Xuming:MultiType-FilePicker:1.0.9'
 }
 
 /*

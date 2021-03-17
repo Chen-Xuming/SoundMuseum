@@ -127,7 +127,7 @@
                 android:layout_marginLeft="108.00dp"
                 android:layout_marginRight="108.00dp"
                 android:id="@+id/Editor_song_title"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:textColor="@color/editor_song_title_color"
                 com.zatrek.app:fontName="Oswald-Regular.ttf"
