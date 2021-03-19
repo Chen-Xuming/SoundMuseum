@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:com.zatrek.app="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="#E9E8E8">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/convert_toolbar"
+        app:title="格式转换"
+        app:titleTextColor="#FFFFFF"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#1267B8"
+        app:navigationIcon="@drawable/ic_arrow_back_white_24dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="文件"
+            android:textColor="#90000000"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:id="@+id/convert_filepath"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginTop="5dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="15dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="目标格式"
+            android:textColor="#90000000"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_marginLeft="10dp" />
+
+        <com.jaredrummler.materialspinner.MaterialSpinner
+            android:id="@+id/convert_spinner_format"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="码率"
+            android:textColor="#90000000"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_marginLeft="10dp"/>
+
+        <com.jaredrummler.materialspinner.MaterialSpinner
+            android:id="@+id/convert_spinner_bitrate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="采样率"
+            android:textColor="#90000000"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_marginLeft="10dp"/>
+
+        <com.jaredrummler.materialspinner.MaterialSpinner
+            android:id="@+id/convert_spinner_samplerate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="声道"
+            android:textColor="#90000000"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_marginLeft="10dp"/>
+
+        <com.jaredrummler.materialspinner.MaterialSpinner
+            android:id="@+id/convert_spinner_channel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+    <com.ringtone.maker.Views.CustomButton
+        com.zatrek.app:fontName="Oswald-Regular.ttf"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:id="@+id/convert_done"
+        android:layout_width="match_parent"
+        android:layout_height="40.00dp"
+        android:background="@drawable/next_button_unpressed2"
+        android:text="开始转换"
+        android:textColor="@color/editor_save_text_color"
+        android:textSize="18sp"
+        />
+
+</LinearLayout>

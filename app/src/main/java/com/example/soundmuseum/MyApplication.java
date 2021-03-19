@@ -5,6 +5,9 @@ import android.app.Application;
 import com.baidu.mapapi.CoordType;
 import com.baidu.mapapi.SDKInitializer;
 
+import cafe.adriel.androidaudioconverter.AndroidAudioConverter;
+import cafe.adriel.androidaudioconverter.callback.ILoadCallback;
+
 
 public class MyApplication extends Application {
   @Override
@@ -22,5 +25,16 @@ public class MyApplication extends Application {
     SDKInitializer.setCoordType(CoordType.BD09LL);
 
 
+    // FFmpeg
+    AndroidAudioConverter.load(this, new ILoadCallback() {
+        @Override
+        public void onSuccess() {
+          // Great!
+        }
+        @Override
+        public void onFailure(Exception error) {
+          // FFmpeg is not supported by device
+        }
+      });
   }
 }

@@ -1,8 +1,11 @@
 package com.example.soundmuseum;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -12,18 +15,20 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.soundmuseum.dbMeter.DBMeterActivity;
-import com.example.soundmuseum.fm.AudioFmActivity;
+import com.example.soundmuseum.formatConvert.FormatConvertActivity;
 import com.jaeger.library.StatusBarUtil;
 import com.ringtone.maker.Activities.Activity_Editor;
 import com.vincent.filepicker.Constant;
 import com.vincent.filepicker.activity.AudioPickActivity;
 import com.vincent.filepicker.filter.entity.AudioFile;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.regex.Pattern;
+
+import static android.os.Environment.DIRECTORY_MUSIC;
 
 public class ToolActivity extends AppCompatActivity {
+
+    private int request_type = -1;  // 0: info; 1: convert; 2: cut
 
     private CardView cardView_analysis;
     private CardView cardView_convert;
@@ -37,7 +42,7 @@ public class ToolActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tool);
 
-        StatusBarUtil.setColor(this, Color.parseColor("#1A91FF"), 0);
+        StatusBarUtil.setColor(this, Color.parseColor("#1A91FF"), 100);
 
         //////////// toolbar 初始化
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbox_toolbar);
@@ -60,20 +65,41 @@ public class ToolActivity extends AppCompatActivity {
         cardView_analysis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                request_type = 0;
+                pickFile();
             }
         });
 
         cardView_convert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                request_type = 1;
+                //pickFile();
 
+                Uri uri = Uri.parse("content://com.android.externalstorage.documents/document/primary:Music");
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//                intent.setType("audio/*");
+//                intent.setData(Uri.parse(Environment.getExternalStoragePublicDirectory(DIRECTORY_MUSIC)
+//                        .getAbsolutePath()));
+                intent.setDataAndType(uri, "audio/*");
+
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.addFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+                startActivityForResult(intent,100);
+
+//                Uri uri = Uri.parse("content://com.android.externalstorage.documents/document/primary:Music");
+//                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+//                intent.addCategory(Intent.CATEGORY_OPENABLE);
+//                intent.setType("audio/*");
+//                intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uri);
+//                startActivityForResult(intent, 100);
             }
         });
 
         cardView_cutter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                request_type = 2;
                 pickFile();
             }
         });
@@ -100,20 +126,41 @@ public class ToolActivity extends AppCompatActivity {
             ArrayList<AudioFile> list = data.getParcelableArrayListExtra(Constant.RESULT_PICK_AUDIO);
             if(!list.isEmpty()){
                 filePath = list.get(0).getPath();
-                toCut();
             }
+            switch (request_type){
+                case 0:
+                    //toShowInfo();
+                    break;
+                case 1:
+                    toConvert();
+                    break;
+                case 2:
+                    toCut();
+                    break;
+
+                    default: break;
+            }
+
+        }
+
+        if(requestCode == 100 && resultCode == RESULT_OK){
+            Uri uri = data.getData();
+            String s = Environment.getExternalStorageDirectory().getAbsolutePath() + "/";
+            s = uri.getPath().replace("/document/primary:", s);
+            Log.d("Uri_Path", s);
+            filePath = s;
+            toConvert();
+            //Toast.makeText(ToolActivity.this, "路径：" + uri.getPath(), Toast.LENGTH_LONG).show();
         }
     }
 
     void toCut() {
         if(filePath != null){
-
+            request_type = -1;
             String temp = filePath;
             String title = filePath.substring(
                     filePath.lastIndexOf("/") + 1, filePath.lastIndexOf("."));
             filePath = null;
-
-            //Toast.makeText(this, title, Toast.LENGTH_LONG).show();
 
             Intent intent = new Intent(ToolActivity.this, Activity_Editor.class);
             intent.putExtra("path", temp);
@@ -121,4 +168,30 @@ public class ToolActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
+
+    void toConvert(){
+        if(filePath != null){
+            request_type = -1;
+            String temp = filePath;
+            filePath = null;
+            Intent intent = new Intent(ToolActivity.this, FormatConvertActivity.class);
+            intent.putExtra("path", temp);
+            startActivity(intent);
+        }
+    }
+
+//    void toShowInfo(){
+//        if(filePath != null){
+//            request_type = -1;
+//            String temp = filePath;
+//            filePath = null;
+//
+//            Intent intent = new Intent(ToolActivity.this, InfoActivity.class);
+//            intent.putExtra("path", temp);
+//
+//            startActivity(intent);
+//        }
+//    }
+
+
 }
