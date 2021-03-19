@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+
+    <integer-array name="menu_array">
+        <item>@drawable/ic_launcher_foreground</item>
+        <item>@drawable/ic_launcher_foreground</item>
+        <item>@drawable/ic_launcher_foreground</item>
+        <item>@drawable/ic_launcher_foreground</item>
+        <item>@drawable/ic_launcher_foreground</item>
+    </integer-array>
+
+    <string-array name="MenuTitles">
+
+        <item>title1</item>
+        <item>title2</item>
+        <item>title3</item>
+        <item>title4</item>
+        <item>SPACE</item>
+        <item>title5</item>
+
+    </string-array>
+
+
+
+
+
+
+</resources>

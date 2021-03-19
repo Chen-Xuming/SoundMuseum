@@ -40,8 +40,7 @@ public class MainActivity extends AppCompatActivity {
         btn_format.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                audioFormatConvert();
+                startActivity(new Intent(MainActivity.this, DrawerActivity.class));
             }
         });
 

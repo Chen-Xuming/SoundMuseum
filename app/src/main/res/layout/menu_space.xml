@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="440.00dp"
+    android:layout_height="26.40dp">
+
+    <View
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="17.50dp"
+        android:layout_marginRight="17.50dp"
+        android:background="@color/menu_space_item_color"
+        android:layout_width="280dp"
+        android:layout_height="1sp" />
+</RelativeLayout>
