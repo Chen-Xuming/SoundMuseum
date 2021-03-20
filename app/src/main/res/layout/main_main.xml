@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/tools"
+    android:background="#0B0D16"
+    android:orientation="vertical">
+
+    <!-- "toolbar" -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:orientation="horizontal"
+        android:background="#111520">
+
+        <ImageView
+            android:id="@+id/drawer_opener"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/ic_menu_24dp"/>
+
+        <TableLayout
+            android:id="@+id/main_tablayout"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_gravity="center"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp" />
+
+        <ImageView
+            android:id="@+id/main_search_button"
+            android:layout_marginRight="10dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/ic_search_4dp"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/main_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+
+        <!-- ********** Floating Button ************ -->
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/floating_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+
+            fab:menu_labels_style="@style/MenuLabelsStyle"
+            fab:menu_labels_showAnimation="@anim/jump_from_down"
+            fab:menu_labels_hideAnimation="@anim/jump_to_down"
+            fab:menu_animationDelayPerItem="0"
+            fab:menu_shadowColor="#444"
+            fab:menu_colorNormal="#FFB805"
+            fab:menu_colorPressed="#F2AB00"
+            fab:menu_colorRipple="#D99200">
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab_create"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_create_black_24dp"
+                fab:fab_label="创建" />
+
+        </com.github.clans.fab.FloatingActionMenu>
+    </RelativeLayout>
+    
+</LinearLayout>

@@ -85,8 +85,6 @@ dependencies {
     // mapActivity's popupView
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
 
-    // 文件选择器
-    implementation 'com.github.Chen-Xuming:MultiType-FilePicker:1.0.9'
 
     // audio format convert bases on FFmpeg
     implementation 'com.github.imesut:AndroidAudioConverter:0.0.9-SNAPSHOT'
@@ -96,6 +94,22 @@ dependencies {
 
     // Loading waiting
     implementation 'com.kaopiz:kprogresshud:1.2.0'
+
+    implementation 'com.github.Chen-Xuming:AndroidAudioRecorder:0.3.1'   // recorder录音机
+
+    implementation 'com.github.clans:fab:1.6.4'     // floating-button
+
+    implementation 'com.leon:lsettingviewlibrary:1.7.0'     // 通用item
+
+    implementation 'me.thewyp:avatar:1.0.4'             // 换头像
+
+    implementation 'com.squareup.okhttp3:okhttp:4.7.2'      // okhttp：网络
+    implementation 'com.squareup.okio:okio:2.6.0'
+
+    implementation 'com.google.code.gson:gson:2.8.6'        // gson
+
+    implementation 'com.lcodecorex:tkrefreshlayout:1.0.7'   // refresh and loadmore
+
 
 }
 

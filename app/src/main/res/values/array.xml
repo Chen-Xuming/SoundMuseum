@@ -1,23 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-
     <integer-array name="menu_array">
-        <item>@drawable/ic_launcher_foreground</item>
-        <item>@drawable/ic_launcher_foreground</item>
-        <item>@drawable/ic_launcher_foreground</item>
-        <item>@drawable/ic_launcher_foreground</item>
-        <item>@drawable/ic_launcher_foreground</item>
+        <item>@drawable/ic_menu_center</item>
+
+        <item>@drawable/ic_menu_map</item>
+
+        <item>@drawable/ic_menu_map</item>
+        <item>@drawable/ic_menu_fm</item>
+
+        <item>@drawable/ic_menu_fm</item>
+
+        <item>@drawable/ic_menu_convert2</item>
+        <item>@drawable/ic_menu_cut2</item>
+        <item>@drawable/ic_menu_db2</item>
+
     </integer-array>
 
     <string-array name="MenuTitles">
 
-        <item>title1</item>
-        <item>title2</item>
-        <item>title3</item>
-        <item>title4</item>
+        <item>个人中心</item>
         <item>SPACE</item>
-        <item>title5</item>
+        <item>声音地图</item>
+        <item>白噪音电台</item>
+        <item>SPACE</item>
+        <item>格式转换</item>
+        <item>音频裁剪</item>
+        <item>分贝检测</item>
+
 
     </string-array>
 
