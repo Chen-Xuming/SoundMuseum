@@ -13,7 +13,7 @@ public class MapModel implements ClusterItem {
     private LatLng mPosition;
 
     private String title;               // 标题
-    private String s_duration;          // 音频时长(string)
+    private int s_duration;          // 音频时长(string)
     private String author_id;           // 作者id
     private String s_time;                // 发布时间
     private String address;             // 发布地点
@@ -21,7 +21,7 @@ public class MapModel implements ClusterItem {
 
     private String audio_url;           // 音频链接
 
-    public MapModel(double lat, double lng, String title, String duration, String author_id, String time, String address, String content, String audio_url) {
+    public MapModel(double lat, double lng, String title, int duration, String author_id, String time, String address, String content, String audio_url) {
         this.title = title;
         this.s_duration = duration;
         this.author_id = author_id;
@@ -48,7 +48,7 @@ public class MapModel implements ClusterItem {
         return title;
     }
 
-    public String getS_duration() {
+    public int getS_duration() {
         return s_duration;
     }
 

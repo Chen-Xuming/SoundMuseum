@@ -110,6 +110,10 @@ dependencies {
 
     implementation 'com.lcodecorex:tkrefreshlayout:1.0.7'   // refresh and loadmore
 
+    implementation 'net.the4thdimension:audio-wife:1.0.3'   // 小小播放器
+
+    implementation 'pub.devrel:easypermissions:2.0.1'   // 快速权限
+
 
 }
 

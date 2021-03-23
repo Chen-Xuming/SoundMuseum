@@ -1,8 +1,10 @@
 package com.example.soundmuseum.fm;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatSeekBar;
@@ -13,14 +15,22 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.soundmuseum.R;
+import com.example.soundmuseum.record.Record;
 import com.freedom.lauzy.playpauseviewlib.PlayPauseView;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.jaeger.library.StatusBarUtil;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -29,9 +39,14 @@ import java.util.concurrent.TimeUnit;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import jp.wasabeef.glide.transformations.CropCircleWithBorderTransformation;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class AudioFmActivity extends AppCompatActivity {
-
+    private Context context;
 
     private ImageView fm_album_img;
     private TextView fm_title_text;
@@ -134,27 +149,71 @@ public class AudioFmActivity extends AppCompatActivity {
         fm_next_song.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadSong();
+                requestSong();
                 if(mediaPlayer!= null && mediaPlayer.isPlaying())
                     mediaPlayer.pause();
                 if(fm_playPauseView.isPlaying()) fm_playPauseView.pause();
             }
         });
 
-        loadSong();
+        requestSong();
+    }
+
+
+    private void requestSong(){
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("http://1.15.157.176/soundmuseum/web/index.php?r=sound/randfm")
+                .build();
+        Call call = client.newCall(request);
+
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Looper.prepare();
+                Toast.makeText(context, "网络不佳，请重试。", Toast.LENGTH_LONG).show();
+                Looper.loop();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String result = response.body().string();
+
+                final JsonObject jsonObject  = JsonParser.parseString(result).getAsJsonObject();
+
+                if(jsonObject.get("code").getAsInt() == 1){
+
+                    JsonObject fm = jsonObject.get("data").getAsJsonObject();
+                    if(current_song != null && current_song.getId() == fm.get("id").getAsInt()){
+                        requestSong();
+                        return;
+                    }
+
+                    AudioFmModel audioFmModel = new AudioFmModel(
+                            fm.get("id").getAsInt(),
+                            fm.get("song_name").getAsString(),
+                            fm.get("song_url").getAsString(),
+                            fm.get("album_url").getAsString(),
+                            fm.get("duration").getAsInt(),
+                            0
+                    );
+
+                    current_song = audioFmModel;
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadSong();
+                        }
+                    });
+                }
+            }
+        });
     }
 
 
     private void loadSong(){
-
-        AudioFmModel temp = AudioFmModel.test_getData();
-        if(current_song != null){
-            while(current_song.getId() == temp.getId()){
-                temp = AudioFmModel.test_getData();
-            }
-        }
-        current_song = temp;
-
         if(mediaPlayer != null && mediaPlayer.isPlaying()){
             mediaPlayer.stop();
             if(fm_playPauseView.isPlaying()) fm_playPauseView.pause();
@@ -165,7 +224,9 @@ public class AudioFmActivity extends AppCompatActivity {
 
         fm_title_text.setText(current_song.getSong_title());
 
-        fm_time_right.setText(current_song.getDuration());
+        String right_time = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) current_song.getDuration()),
+                TimeUnit.MILLISECONDS.toSeconds((long) current_song.getDuration()) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) current_song.getDuration())));
+        fm_time_right.setText(right_time);
 
         // 圆角图片
         RequestOptions options = new RequestOptions()
@@ -203,7 +264,7 @@ public class AudioFmActivity extends AppCompatActivity {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 fm_playPauseView.pause();
-                loadSong();
+                requestSong();
             }
         });
 
@@ -227,6 +288,14 @@ public class AudioFmActivity extends AppCompatActivity {
 //            fm_playPauseView.pause();
 //            //mediaPlayer.release();
 //        }
+    }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        if(mediaPlayer != null && mediaPlayer.isPlaying()){
+            mediaPlayer.pause();
+        }
     }
 
     /*

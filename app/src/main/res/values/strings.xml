@@ -17,7 +17,22 @@
     <string name="action_show">Show Panel</string>
     <string name="action_anchor_enable">Enable Anchor Point</string>
     <string name="action_anchor_disable">Disable Anchor Point</string>
-    <string name="hello"><![CDATA[<b>The Awesome Sliding Up Panel</b><br/> Brought to you by<br/><a href="http://umanoapp.com">http://umanoapp.com</a>]]></string>
+    <string name="hello1"><![CDATA[<b>The Awesome Sliding Up Panel</b><br/> Brought to you by<br/><a href="http://umanoapp.com">http://umanoapp.com</a>]]></string>
     <string name="follow"><![CDATA[Follow us<br/>on <a href="http://twitter.com/umanoapp">Twitter</a>]]></string>
+
+
+    <!-- original listen app -->
+    <string name="hello">用户名</string>
+    <string name="login_name">请输入账号</string>
+    <string name="enter_pass">请输入密码</string>
+    <string name="verify_pass">请确认输入密码</string>
+    <string name="login">登 录</string>
+    <string name="go_register"><u>还没账号？注册一个 ></u></string>
+    <string name="register">注 册</string>
+    <string name="psw_warn">密码输入不一致，请重新输入</string>
+    <string name="title_activity_follow_me">FollowMe</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="my_follow">关注的人</string>
 
 </resources>

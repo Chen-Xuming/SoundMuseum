@@ -42,8 +42,25 @@
     <color name="whiteHint" tools:keep="@color/whiteHint">#90ffffff</color>
     <color name="whiteHintLight">#30ffffff</color>
     <color name="whiteTransparent">#60ffffff</color>
-    <color name="white">#ffffff</color>
     <color name="transparent">#00000000</color>
     <color name="app_decorview_color">#090c15</color>
     <color name="app_default_background">#151a28</color>
+
+
+    <!-- origin -->
+    <color name="ReleaseTime">#ff6f00</color>
+    <color name="Orange1">#ffa568</color>
+    <color name="Black">#383130</color>
+    <color name="Gray">#a1a1a1</color>
+    <color name="tabNotChosenTextColor">#3E3838</color>
+    <color name="tabChosenTextColor">#2e2a2a</color>
+    <color name="shuibowen">#ffbd71</color>
+    <color name="background">#eeeeee</color>
+    <color name="darkGray">#939393</color>
+    <color name="line">#eaeaea</color>
+    <color name="top">#fafafa</color>
+    <color name="white">#ffffff</color>
+    <color name="link_blue">#4f7daf</color>
+    <color name="btn_blue">#1296db</color>
+    <color name="red">#d81e06</color>
 </resources>

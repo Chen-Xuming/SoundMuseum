@@ -20,9 +20,7 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity android:name=".formatConvert.FormatConvertActivity"></activity>
         <activity android:name=".dbMeter.DBMeterActivity" />
-        <activity android:name=".ToolActivity" />
-        <activity android:name=".DrawerActivity" />
-        <activity android:name=".DemoActivity" />
+
         <activity android:name=".fm.AudioFmActivity" />
         <activity android:name=".TestKotlinActivity" />
         <activity android:name=".map.MapActivity" /> <!-- 百度地图API -->
@@ -32,8 +30,7 @@
         <activity
             android:name="com.ringtone.maker.Activities.Activity_Editor"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:screenOrientation="portrait">
             <intent-filter android:label="Edit">
                 <action android:name="android.intent.action.EDIT" />
 
@@ -48,6 +45,24 @@
                 <data android:mimeType="audio/*" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".account.AccountActivity"
+            android:theme="@style/SeachViewActivityTheme"/>
+        <activity
+            android:name=".record.RecordActivity"
+            android:theme="@style/SeachViewActivityTheme"/>
+        <activity android:name=".UserCenterActivity" />
+        <activity
+            android:name=".search.MySearchActivity"
+            android:theme="@style/SeachViewActivityTheme" />
+        <activity android:name=".MyCenterActivity" />
+        <activity android:name=".SendActivity"
+            android:theme="@style/CreateActivityTheme"/>
+        <activity android:name=".register" />
+        <activity android:name=".login" />
+
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

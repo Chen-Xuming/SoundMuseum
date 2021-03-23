@@ -2,6 +2,7 @@ package com.example.soundmuseum.map;
 
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatSeekBar;
@@ -26,15 +27,29 @@ import com.baidu.mapsdkexample.util.clusterutil.clustering.Cluster;
 import com.baidu.mapsdkexample.util.clusterutil.clustering.ClusterManager;
 import com.baidu.mapsdkexample.util.clusterutil.projection.Point;
 import com.example.soundmuseum.R;
+import com.example.soundmuseum.login;
+import com.example.soundmuseum.record.Record;
 import com.freedom.lauzy.playpauseviewlib.PlayPauseView;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.jaeger.library.StatusBarUtil;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MapActivity extends AppCompatActivity {
 
@@ -117,10 +132,7 @@ public class MapActivity extends AppCompatActivity {
                 initCluster();
                 // 加载点
                 loadPoints();
-                // 设置初始视图范围
-                LatLng center = new LatLng(33.513286, 109.552645);
-                MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.newLatLngZoom(center, 5.5f);
-                mBaiduMap.setMapStatus(mapStatusUpdate);
+
             }
         });
 
@@ -181,25 +193,63 @@ public class MapActivity extends AppCompatActivity {
 
     // 大批量加载标记
     private void loadPoints(){
-        List<MapModel> items = new ArrayList<MapModel>();
-        for(int i = 0; i < Points.points.length; i++){
-            MapModel mapModel = new MapModel(
-                    Points.points[i].getLat(),
-                    Points.points[i].getLng(),
-                    Points.titles[i % 10],
-                    "3:21",
-                    "chen",
-                    "2020.10.2",
-                    "江苏省苏州市",
-                    "荆州机场今年春节期间新建成通航，很多老人在家人陪伴下来看航班起降。我们也把它当成晚饭后的消遣。晚上九点左右，机场已经关闭了，没有航班，它旁边的田野里蛙声响成一片。",
-                    Points.uris[i % 10]
-            );
-            items.add(mapModel);
-        }
 
-        Log.d("loadPoints", "" + Points.points.length);
-        mClusterManager.addItems(items);
-        Log.d("loadPoints", "done");
+        List<MapModel> items = new ArrayList<MapModel>();
+
+        OkHttpClient client = new OkHttpClient();
+        final Request request = new Request.Builder()
+                .url("http://1.15.157.176/soundmuseum/web/index.php?r=sound/map").build();
+
+        Call call = client.newCall(request);
+
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Looper.prepare();
+                Toast.makeText(MapActivity.this, "网络不佳，请重试。", Toast.LENGTH_LONG).show();
+                Looper.loop();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String result = response.body().string();
+
+                final JsonObject jsonObject  = JsonParser.parseString(result).getAsJsonObject();
+                if(jsonObject.get("code").getAsInt() == 1){
+                    JsonArray data = jsonObject.get("data").getAsJsonArray();
+
+                    for(JsonElement point : data){
+
+                        JsonObject sing_point = point.getAsJsonObject();
+                        MapModel mapModel = new MapModel(
+                                sing_point.get("lat").getAsDouble(),
+                                sing_point.get("lng").getAsDouble(),
+                                sing_point.get("title").getAsString(),
+                                sing_point.get("duration").getAsInt(),
+                                sing_point.get("username").getAsString(),
+                                sing_point.get("create_time").getAsString(),
+                                sing_point.get("address").getAsString(),
+                                sing_point.get("description").getAsString(),
+                                sing_point.get("sound_url").getAsString()
+
+                        );
+                        items.add(mapModel);
+                    }
+
+                    mClusterManager.addItems(items);
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            // 设置初始视图范围
+                            LatLng center = new LatLng(33.513286, 109.552645);
+                            MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.newLatLngZoom(center, 5.5f);
+                            mBaiduMap.setMapStatus(mapStatusUpdate);
+                        }
+                    });
+                }
+            }
+        });
     }
 
     private void initCluster() {
@@ -248,7 +298,9 @@ public class MapActivity extends AppCompatActivity {
         mLayout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
 
         textView_title.setText(mapModel.getTitle());
-        textView_time_right.setText(mapModel.getS_duration());
+        String right_time = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) mapModel.getS_duration()),
+                TimeUnit.MILLISECONDS.toSeconds((long) mapModel.getS_duration()) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) mapModel.getS_duration())));
+        textView_time_right.setText(right_time);
         textView_author_date.setText(mapModel.getAuthor_id() + " / " + mapModel.getS_time());
         textView_place.setText(mapModel.getAddress());
         textView_content.setText(mapModel.getContent());

@@ -124,8 +124,8 @@
 
             <com.ringtone.maker.Views.CustomTextView
                 android:layout_marginBottom="37.50dp"
-                android:layout_marginLeft="108.00dp"
-                android:layout_marginRight="108.00dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:id="@+id/Editor_song_title"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"

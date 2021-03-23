@@ -56,7 +56,7 @@ public class FormatConvertActivity extends AppCompatActivity {
 
         //////////// toolbar 初始化
         Toolbar toolbar = (Toolbar) findViewById(R.id.convert_toolbar);
-        toolbar.setTitle("工具箱");
+        toolbar.setTitle("格式转换");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
