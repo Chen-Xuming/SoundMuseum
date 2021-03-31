@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-
+    <!--标题栏高度-->
+    <dimen name="ActionBarHeight">50dp</dimen>
+    <!--地图高度-->
+    <dimen name="mapHeight">200dp</dimen>
 
     <dimen name="intro_indicator_container">20dp</dimen>
     <dimen name="intro_indicator_dotdiameter">10dp</dimen>
@@ -107,6 +110,34 @@
     <dimen name="dialog_Setbutton_Container_margintop">15dp</dimen>
     <dimen name="dialog_Setbutton_Container_marginRight">50dp</dimen>
     <integer name="Dialog_height">270</integer>
+
+
+
+
+    <color name="black">#FF000000</color>
+
+    <!--标题栏颜色-->
+    <color name="actionBarColor">#393A3E</color>
+    <!--标题栏点击背景色-->
+    <color name="actionBarPreColor">#303135</color>
+    <!--分割线颜色-->
+    <color name="divideColor">#F0F1F2</color>
+    <!--背景色-->
+    <color name="bgColor">#FEFFFF</color>
+    <!--提示语颜色-->
+    <color name="hintTextColor">#F0F1F2</color>
+    <!--地点名称文字颜色-->
+    <color name="positionNameColor">#0B0F12</color>
+    <!--地点地址文字颜色-->
+    <color name="positionAddressColor">#999999</color>
+    <!--列表默认颜色-->
+    <color name="itemNorColor">#FFFEFFFF</color>
+    <!--列表点击颜色-->
+    <color name="itemPreColor">#EEEEEE</color>
+    <!--标题栏的绿色按钮默认颜色-->
+    <color name="greenNorColor">#FF00AD2E</color>
+    <!--标题栏的绿色按钮点击颜色-->
+    <color name="greenPreBtn">#DD00AD2E</color>
 
 
 </resources>

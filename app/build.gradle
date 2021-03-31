@@ -85,7 +85,6 @@ dependencies {
     // mapActivity's popupView
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
 
-
     // audio format convert bases on FFmpeg
     implementation 'com.github.imesut:AndroidAudioConverter:0.0.9-SNAPSHOT'
 

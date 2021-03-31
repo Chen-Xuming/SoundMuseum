@@ -4,7 +4,9 @@
 
 package com.example.soundmuseum;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Looper;
@@ -54,10 +56,14 @@ public class MyCenterActivity extends AppCompatActivity {
     private LSettingItem item_fans;
     private LSettingItem item_logout;
 
+    private Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_center);
+
+        context = this;
 
         img_background = findViewById(R.id.mycenter_bg);
         img_headPic = findViewById(R.id.mycenter_head);
@@ -270,6 +276,16 @@ public class MyCenterActivity extends AppCompatActivity {
                 final JsonObject jsonObject  = JsonParser.parseString(result).getAsJsonObject();
 
                 if(jsonObject.get("code").getAsInt() == 1){
+
+                    SharedPreferences sharedPre = context.getSharedPreferences("user", context.MODE_PRIVATE);
+                    //获取Editor对象
+                    SharedPreferences.Editor editor=sharedPre.edit();
+                    //设置参数
+                    editor.putString("headpic", headPicUrl);
+                    //提交
+                    editor.apply();
+
+                    UserManager.init(context);
 
                     runOnUiThread(new Runnable() {
                         @Override

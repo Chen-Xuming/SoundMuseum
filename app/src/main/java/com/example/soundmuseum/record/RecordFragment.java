@@ -242,7 +242,7 @@ public class RecordFragment extends Fragment {
 
 
                         String create_time = single_record.get("create_time").getAsString();
-                        create_time = create_time.substring(0, create_time.length() - 5);
+                        //create_time = create_time.substring(0, create_time.length() - 5);
 
                         int like = single_record.get("like") != null ? single_record.get("like").getAsInt() : 0;
                         int collect = single_record.get("collect") != null ? single_record.get("collect").getAsInt() : 0;
@@ -322,7 +322,7 @@ public class RecordFragment extends Fragment {
 
 
                         String create_time = single_record.get("create_time").getAsString();
-                        create_time = create_time.substring(0, create_time.length() - 5);
+                        //create_time = create_time.substring(0, create_time.length() - 5);
 
                         int like = single_record.get("like") != null ? single_record.get("like").getAsInt() : 0;
                         int collect = single_record.get("collect") != null ? single_record.get("collect").getAsInt() : 0;

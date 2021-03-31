@@ -1,16 +1,18 @@
 package com.example.soundmuseum;
 
-import android.content.Context;
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -19,18 +21,17 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.soundmuseum.dbMeter.DBMeterActivity;
 import com.example.soundmuseum.fm.AudioFmActivity;
 import com.example.soundmuseum.formatConvert.FormatConvertActivity;
+import com.example.soundmuseum.location.LocationActivity;
 import com.example.soundmuseum.map.MapActivity;
 import com.example.soundmuseum.record.Record;
 import com.example.soundmuseum.record.RecordFragment;
@@ -72,8 +73,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        StatusBarUtil.setColor(this, Color.parseColor("#222941"), 100);
-
+        StatusBarUtil.setColor(this, Color.parseColor("#222941"), 150);
 
         /************************************************
 
@@ -111,23 +111,12 @@ public class MainActivity extends AppCompatActivity {
                     case 7:
                         gotoDbMeter();
                         break;
+
                         default:break;
                 }
             }
         });
         recyclerView.setAdapter(adapter_menu);
-        mDrawer.addDrawerListener(new DrawerLayout.DrawerListener() {
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) { }
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                StartAnimation();
-            }
-            @Override
-            public void onDrawerClosed(View drawerView) { }
-            @Override
-            public void onDrawerStateChanged(int newState) { }
-        });
 
         UserManager.init(this);
         UserManager userManager =UserManager.getCurrentUser();
@@ -148,6 +137,19 @@ public class MainActivity extends AppCompatActivity {
 
         imageView_menu_open = findViewById(R.id.drawer_opener);
         imageView_search = findViewById(R.id.main_search_button);
+
+        mDrawer.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) { }
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                StartAnimation();
+            }
+            @Override
+            public void onDrawerClosed(View drawerView) { }
+            @Override
+            public void onDrawerStateChanged(int newState) { }
+        });
 
 
         imageView_menu_open.setOnClickListener(new View.OnClickListener() {
@@ -232,12 +234,32 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        requestNeedPermission();
+    }
+
+    private void updateProfile(int isLogin){
+        // 圆形头像, 并加白边框
+        RequestOptions options = new RequestOptions()
+                .transform(new CropCircleWithBorderTransformation(5, Color.WHITE))
+                .error(R.drawable.fox);
+        Glide.with(this)
+                .load(isLogin == 1 ? UserManager.getCurrentUser().getHeadPic_url() : R.drawable.fox)
+                .apply(options)
+                .into(imageView_avata);
     }
 
 
     @Override
     protected void onResume(){
         super.onResume();
+        if(UserManager.getCurrentUser() != null){
+            textView_username.setText(UserManager.getCurrentUser().getUsername());
+            updateProfile(1);
+        }else{
+            textView_username.setText("未登录");
+            updateProfile(0);
+        }
     }
 
     @Override
@@ -291,6 +313,13 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("title", title);
             startActivity(intent);
         }
+
+        // test for pick location
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE && data != null) {
+            String position = data.getStringExtra("position");
+            Log.d("pick_location", position + "\n");
+        }
+
     }
 
 
@@ -390,4 +419,51 @@ public class MainActivity extends AppCompatActivity {
     private void gotoSearch(){
         startActivity(new Intent(MainActivity.this, MySearchActivity.class));
     }
+
+    /*
+            TEST
+     */
+    private final static int REQUEST_CODE = 0x123;
+    /**
+     * 需要 android6.0 以上处理的权限
+     */
+    private String[] PERMISSIONS = {
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.READ_PHONE_STATE};
+
+    /**
+     * 判断是否需要进行权限的请求
+     */
+    private void requestNeedPermission() {
+        boolean temp = false;
+        for (String permission : PERMISSIONS) {
+            if (!hasPermissionGranted(permission)) {
+                temp = true;
+                break;
+            }
+        }
+        // 需要权限则请求权限
+        if (temp) {
+            ActivityCompat.requestPermissions(this, PERMISSIONS, 0);
+        }
+    }
+
+    /**
+     * 判断该权限是否已经授权
+     *
+     * @param permission
+     * @return
+     */
+    private boolean hasPermissionGranted(String permission) {
+        return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED;
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+
 }

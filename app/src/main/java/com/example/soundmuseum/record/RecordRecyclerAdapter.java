@@ -2,6 +2,7 @@ package com.example.soundmuseum.record;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -41,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import jp.wasabeef.glide.transformations.CropCircleWithBorderTransformation;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -72,12 +74,12 @@ public class RecordRecyclerAdapter extends RecyclerView.Adapter<RecordRecyclerAd
         this.context = context;
         this.record_list = list;
 
-        drawable_play = ContextCompat.getDrawable(context, R.drawable.play);
-        drawable_pause = ContextCompat.getDrawable(context, R.drawable.pause);
-        drawable_like_1 = ContextCompat.getDrawable(context, R.drawable.like_empty);        // 空心赞
-        drawable_like_2 = ContextCompat.getDrawable(context, R.drawable.like_orange);
-        drawable_collect_1 = ContextCompat.getDrawable(context, R.drawable.collect_empty);   // 空心收藏
-        drawable_collect_2 = ContextCompat.getDrawable(context, R.drawable.collect_orange);
+        drawable_play = ContextCompat.getDrawable(context, R.drawable.ic_play_white);
+        drawable_pause = ContextCompat.getDrawable(context, R.drawable.ic_pause_white);
+        drawable_like_1 = ContextCompat.getDrawable(context, R.drawable.ic_like_white);        // 空心赞
+        drawable_like_2 = ContextCompat.getDrawable(context, R.drawable.ic_like_fill_red);
+        drawable_collect_1 = ContextCompat.getDrawable(context, R.drawable.ic_collection_white);   // 空心收藏
+        drawable_collect_2 = ContextCompat.getDrawable(context, R.drawable.ic_collection_fill_yellow);
 
         mediaPlayerUtils = new MediaPlayerUtils();
         mediaPlayerUtils.listener = this;
@@ -116,7 +118,7 @@ public class RecordRecyclerAdapter extends RecyclerView.Adapter<RecordRecyclerAd
 
         // 如果没有头像，就用内置头像
         RequestOptions options = new RequestOptions()
-                .transform(new CircleCrop())
+                .transform(new CropCircleWithBorderTransformation(2, Color.WHITE))
                 .error(R.drawable.fox);
         if (record.getHeadpic_url() != null) {
             Glide.with(this.context).load(record.getHeadpic_url())

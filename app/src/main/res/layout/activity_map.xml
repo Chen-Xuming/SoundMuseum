@@ -24,17 +24,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <ImageButton
-            android:id="@+id/map_upload_btn"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:background="#832196F3"
-            android:src="@drawable/map_upload"
-            android:layout_marginTop="25dp"
-            android:layout_marginLeft="15dp"
-            android:elevation="5dp"
-            />
-
     </FrameLayout>
 
     <!-- slidingUp layout -->

@@ -1,9 +1,5 @@
 package com.example.soundmuseum;
 
-/*
-            发布动态的页面，目前剩下网络部分未完成 -- 2020/6/26
-
- */
 
 import android.content.Context;
 import android.content.Intent;
@@ -30,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.soundmuseum.location.LocationActivity;
 import com.example.soundmuseum.util.PermissionUtil;
 import com.example.soundmuseum.util.UserManager;
 import com.google.gson.JsonObject;
@@ -50,6 +47,7 @@ import cafe.adriel.androidaudiorecorder.model.AudioChannel;
 import cafe.adriel.androidaudiorecorder.model.AudioSampleRate;
 import cafe.adriel.androidaudiorecorder.model.AudioSource;
 import nl.changer.audiowife.AudioWife;
+import okhttp3.Address;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -81,6 +79,13 @@ public class SendActivity extends AppCompatActivity {
     private TextView mPlaybackTime;
     private Uri mUri = null;
     private static final int INTENT_PICK_AUDIO = 1;
+
+    private String address = null;
+    private Double Lng;
+    private Double Lat;
+
+    TextView textView_location;
+    ImageButton imgbtn_location_delete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +126,29 @@ public class SendActivity extends AppCompatActivity {
                 recordAudio();
             }
         });
+
+
+        // 选择定位
+        ImageButton imgbtn_location = findViewById(R.id.send_select_location);
+        imgbtn_location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(SendActivity.this, LocationActivity.class),
+                        101);
+            }
+        });
+        textView_location = findViewById(R.id.send_address);
+        textView_location.setVisibility(View.GONE);
+        imgbtn_location_delete = findViewById(R.id.send_location_delete);
+        imgbtn_location_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imgbtn_location_delete.setVisibility(View.GONE);
+                textView_location.setVisibility(View.GONE);
+                address = null;
+            }
+        });
+        imgbtn_location_delete.setVisibility(View.GONE);
 
         initPlayer();
     }
@@ -183,7 +211,7 @@ public class SendActivity extends AppCompatActivity {
         AndroidAudioRecorder.with(SendActivity.this)
                 // Required
                 .setFilePath(filePath)
-                .setColor(Color.rgb(20,68,106))
+                .setColor(Color.parseColor("#0d1220"))
                 .setRequestCode(requestCode)
 
                 // Optional
@@ -203,25 +231,13 @@ public class SendActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        /*
-                选择音频完毕后，配置播放器
-         */
-//        if(requestCode == Constant.REQUEST_CODE_PICK_AUDIO){
-//            if (resultCode == RESULT_OK) {
-//                ArrayList<AudioFile> list = data.getParcelableArrayListExtra(Constant.RESULT_PICK_AUDIO);
-//                AudioFile file = list.get(0);
-//
-//                mUri = Uri.parse(file.getPath());
-//
-//                setPlayer();
-//            }
-//        }
-
         if(requestCode == 100 && resultCode == RESULT_OK){
             Uri uri = data.getData();
             String s = Environment.getExternalStorageDirectory().getAbsolutePath() + "/";
             s = uri.getPath().replace("/document/primary:", s);
             mUri = Uri.parse(s);
+
+            Log.d("send_pick", s);
 
             setPlayer();
         }
@@ -245,6 +261,19 @@ public class SendActivity extends AppCompatActivity {
             }else if(resultCode == 2){
                 Toast.makeText(this, "抱歉，录音保存失败。", Toast.LENGTH_SHORT).show();
             }
+        }
+
+
+        /*
+                选取地址成功
+         */
+        if(requestCode == 101 && resultCode == RESULT_OK){
+            address = data.getStringExtra("address");
+            Lat = data.getDoubleExtra("Lat", 0);
+            Lng = data.getDoubleExtra("Lng", 0);
+            textView_location.setVisibility(View.VISIBLE);
+            imgbtn_location_delete.setVisibility(View.VISIBLE);
+            textView_location.setText(address);
         }
     }
 
@@ -416,7 +445,7 @@ public class SendActivity extends AppCompatActivity {
 
         final int duration_ = duration;
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date curDate =  new Date(System.currentTimeMillis());
         final String create_time = formatter.format(curDate);
 
@@ -426,14 +455,33 @@ public class SendActivity extends AppCompatActivity {
                     + "\nduration:" + duration + "\ncreate_time:" + create_time);
 
         OkHttpClient client = new OkHttpClient();
-        RequestBody body = new FormBody.Builder()
-                .add("username", username)
-                .add("title", title)
-                .add("description", description)
-                .add("soundFileUrl", soundFileUrl_)
-                .add("duration", String.valueOf(duration))
-                .add("create_time", create_time)
-                .build();
+
+        RequestBody body;
+
+        if(address == null){
+
+            body = new FormBody.Builder()
+                    .add("username", username)
+                    .add("title", title)
+                    .add("description", description)
+                    .add("sound_url", soundFileUrl_)
+                    .add("duration", String.valueOf(duration))
+                    .add("create_time", create_time)
+                    .build();
+
+        }else {
+            body = new FormBody.Builder()
+                    .add("username", username)
+                    .add("title", title)
+                    .add("description", description)
+                    .add("sound_url", soundFileUrl_)
+                    .add("duration", String.valueOf(duration))
+                    .add("create_time", create_time)
+                    .add("address", address)
+                    .add("lat", Lat + "")
+                    .add("lng", Lng + "")
+                    .build();
+        }
         Request request = new Request.Builder()
                 .url(api).post(body)
                 .build();

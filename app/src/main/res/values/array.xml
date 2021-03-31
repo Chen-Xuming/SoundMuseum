@@ -15,6 +15,8 @@
         <item>@drawable/ic_menu_cut2</item>
         <item>@drawable/ic_menu_db2</item>
 
+
+
     </integer-array>
 
     <string-array name="MenuTitles">
@@ -27,6 +29,7 @@
         <item>格式转换</item>
         <item>音频裁剪</item>
         <item>分贝检测</item>
+
 
 
     </string-array>
