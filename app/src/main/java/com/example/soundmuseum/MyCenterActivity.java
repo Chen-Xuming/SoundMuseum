@@ -24,6 +24,7 @@ import com.example.soundmuseum.record.RecordActivity;
 import com.example.soundmuseum.util.UserManager;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.jaeger.library.StatusBarUtil;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.leon.lib.settingview.LSettingItem;
 import com.wyp.avatarstudio.AvatarStudio;

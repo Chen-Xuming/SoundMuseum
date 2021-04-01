@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        StatusBarUtil.setColor(this, Color.parseColor("#222941"), 150);
+        StatusBarUtil.setColor(this, Color.parseColor("#111520"), 120);
 
         /************************************************
 

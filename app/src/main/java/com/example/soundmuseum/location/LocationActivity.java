@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.ZoomControls;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
@@ -37,8 +38,13 @@ import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.example.soundmuseum.R;
+import com.example.soundmuseum.map.MapActivity;
 import com.jaeger.library.StatusBarUtil;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -119,6 +125,9 @@ public class LocationActivity extends Activity implements AdapterView.OnItemClic
 
     private LatLng selected_latlng = null;
 
+    // 用于设置个性化地图的样式文件
+    private static final String CUSTOM_FILE_NAME_CX = "baidu_mapstyle.sty";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -154,6 +163,18 @@ public class LocationActivity extends Activity implements AdapterView.OnItemClic
         mBaiduMap.setOnMapTouchListener(touchListener);
         UiSettings uiSettings = mBaiduMap.getUiSettings();
         uiSettings.setRotateGesturesEnabled(false);
+
+        // 获取.sty文件路径
+        String customStyleFilePath = getCustomStyleFilePath(LocationActivity.this, CUSTOM_FILE_NAME_CX);
+        // 设置个性化地图样式文件的路径和加载方式
+        bmapView.setMapCustomStylePath(customStyleFilePath);
+        // 动态设置个性化地图样式是否生效
+        bmapView.setMapCustomStyleEnable(true);
+
+        View child = bmapView.getChildAt(1);
+        if (child != null && (child instanceof ImageView || child instanceof ZoomControls)) {
+            child.setVisibility(View.INVISIBLE);
+        }
 
         // 初始化当前 MapView 中心屏幕坐标
         mCenterPoint = mBaiduMap.getMapStatus().targetScreen;
@@ -500,6 +521,45 @@ public class LocationActivity extends Activity implements AdapterView.OnItemClic
                 }
             });
         }
+    }
+
+
+    /**
+     * 读取json路径
+     */
+    private String getCustomStyleFilePath(Context context, String customStyleFileName) {
+        FileOutputStream outputStream = null;
+        InputStream inputStream = null;
+        String parentPath = null;
+        try {
+            inputStream = context.getAssets().open(customStyleFileName);
+            byte[] buffer = new byte[inputStream.available()];
+            inputStream.read(buffer);
+            parentPath = context.getFilesDir().getAbsolutePath();
+            File customStyleFile = new File(parentPath + "/" + customStyleFileName);
+            if (customStyleFile.exists()) {
+                customStyleFile.delete();
+            }
+            customStyleFile.createNewFile();
+
+            outputStream = new FileOutputStream(customStyleFile);
+            outputStream.write(buffer);
+        } catch (IOException e) {
+            Log.e("Map-style", "Copy custom style file failed", e);
+        } finally {
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            } catch (IOException e) {
+                Log.e("Map-style", "Close stream failed", e);
+                return null;
+            }
+        }
+        return parentPath + "/" + customStyleFileName;
     }
 
 

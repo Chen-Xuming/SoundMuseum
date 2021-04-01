@@ -135,7 +135,7 @@ public class RecordActivity extends AppCompatActivity {
                         refreshData();
                         refreshLayout.finishRefreshing();
                     }
-                },1000);
+                },500);
             }
 
             @Override
@@ -147,7 +147,7 @@ public class RecordActivity extends AppCompatActivity {
                         loadMoreData();
                         refreshLayout.finishLoadmore();
                     }
-                },1000);
+                },500);
             }
         });
 
@@ -276,7 +276,7 @@ public class RecordActivity extends AppCompatActivity {
                         int duration = single_record.get("duration").getAsInt();
 
                         String create_time = single_record.get("create_time").getAsString();
-                        create_time = create_time.substring(0, create_time.length() - 5);
+                        //create_time = create_time.substring(0, create_time.length() - 5);
 
 
                         int like = single_record.get("like") != null ? single_record.get("like").getAsInt() : 0;

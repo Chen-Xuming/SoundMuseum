@@ -63,15 +63,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             leon:leftIcon="@drawable/mic_colorful"
-            leon:leftText="我的作品"
-            leon:LtextColor="#000000"/>
+            leon:leftText="我的作品" />
         <com.leon.lib.settingview.LSettingItem
             android:id="@+id/mycenter_mycollect"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             leon:leftIcon="@drawable/collect_colorful"
-            leon:leftText="我的收藏"
-            leon:LtextColor="#000000"/>
+            leon:leftText="我的收藏" />
 
         <com.leon.lib.settingview.LSettingItem
             android:id="@+id/mycenter_myfollow"
@@ -79,7 +77,6 @@
             android:layout_height="wrap_content"
             leon:leftIcon="@drawable/follow_colorful"
             leon:leftText="我的关注"
-            leon:LtextColor="#000000"
             android:clickable="true"
             android:focusable="true" />
 
@@ -89,8 +86,7 @@
             android:layout_height="wrap_content"
             leon:leftIcon="@drawable/fans"
             leon:leftText="我的粉丝"
-            leon:LtextColor="#000000"
-            leon:isShowUnderLine="false"/>
+            leon:isShowUnderLine="false" />
 
         <com.leon.lib.settingview.LSettingItem
             android:id="@+id/mycenter_logout"
@@ -98,9 +94,8 @@
             android:layout_height="wrap_content"
             leon:leftIcon="@drawable/logout_colorful"
             leon:leftText="退出登录"
-            leon:LtextColor="#000000"
             android:layout_marginTop="10dp"
-            leon:isShowUnderLine="false"/>
+            leon:isShowUnderLine="false" />
 
     </LinearLayout>
 

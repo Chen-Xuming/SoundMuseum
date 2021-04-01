@@ -135,7 +135,7 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 
     private void init_pictures(View view, int position){
         RequestOptions options = new RequestOptions()
-                .transform(new CropCircleWithBorderTransformation(5,Color.WHITE))
+                .transform(new CropCircleWithBorderTransformation(2,Color.WHITE))
                 .error(R.drawable.fox);
         Glide.with(view)
                 .load(account_list.get(position).getHeadpic_url() == null ?

@@ -4,11 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#090909">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/search_toolbar"
-        android:background="#005EBB"
+        android:background="#242424"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:title="搜索"
@@ -19,30 +20,28 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="35dp"
         android:orientation="vertical"
-        android:background="@color/top">
+        android:background="#242424">
         <android.support.design.widget.TabLayout
+            android:layout_gravity="center_vertical"
             android:id="@+id/search_tablayout"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="30dp"
             app:tabTextAppearance="@style/tabText"
-            app:tabTextColor="@color/darkGray"
-            app:tabSelectedTextColor="@color/ReleaseTime"
-            app:tabIndicatorColor="@color/ReleaseTime"
-
-            app:tabIndicatorHeight="3dp" />
+            app:tabIndicatorColor="#BDBDBD"
+            app:tabIndicatorHeight="0dp"
+            app:tabTextColor="#B8B8B8"
+            app:tabSelectedTextColor="#FF9800"
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="100dp"/>
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/line">
-    </View>
-
     <RelativeLayout
+        android:layout_marginTop="2dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#090909">
 
         <android.support.v4.view.ViewPager
             android:id="@+id/search_viewpager"

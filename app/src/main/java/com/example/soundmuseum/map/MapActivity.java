@@ -1,5 +1,7 @@
 package com.example.soundmuseum.map;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Looper;
@@ -39,7 +41,10 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -73,11 +78,15 @@ public class MapActivity extends AppCompatActivity {
 
     private MapModel current_model = null;
 
+    // 用于设置个性化地图的样式文件
+    private static final String CUSTOM_FILE_NAME_CX = "baidu_mapstyle.sty";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+        StatusBarUtil.setColor(MapActivity.this, Color.parseColor("#1b263b"));
 
         textView_title = findViewById(R.id.map_title);
         seekbar = findViewById(R.id.map_seekbar);
@@ -136,6 +145,14 @@ public class MapActivity extends AppCompatActivity {
             }
         });
 
+        // 获取.sty文件路径
+        String customStyleFilePath = getCustomStyleFilePath(MapActivity.this, CUSTOM_FILE_NAME_CX);
+        // 设置个性化地图样式文件的路径和加载方式
+        mMapView.setMapCustomStylePath(customStyleFilePath);
+        // 动态设置个性化地图样式是否生效
+        mMapView.setMapCustomStyleEnable(true);
+
+
 
         /*
                 播放按钮监听
@@ -143,13 +160,13 @@ public class MapActivity extends AppCompatActivity {
         playPauseView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(playPauseView.isPlaying()){
+                if (playPauseView.isPlaying()) {
                     playPauseView.pause();
-                    if(mediaPlayer!= null && mediaPlayer.isPlaying()){
+                    if (mediaPlayer != null && mediaPlayer.isPlaying()) {
                         mediaPlayer.pause();
                     }
-                }else{
-                    if(isPlayerPrepared && !mediaPlayer.isPlaying()){
+                } else {
+                    if (isPlayerPrepared && !mediaPlayer.isPlaying()) {
                         mediaPlayer.start();
                         playPauseView.play();
                         mHandler.postDelayed(mRunnable, 1000);
@@ -164,10 +181,10 @@ public class MapActivity extends AppCompatActivity {
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(fromUser) {
+                if (fromUser) {
                     mediaPlayer.seekTo(progress);
 
-                    if(!mediaPlayer.isPlaying()){
+                    if (!mediaPlayer.isPlaying()) {
                         int run_time = mediaPlayer.getCurrentPosition();
                         String run_str = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes((long) run_time),
                                 TimeUnit.MILLISECONDS.toSeconds((long) run_time) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) run_time)));
@@ -192,7 +209,7 @@ public class MapActivity extends AppCompatActivity {
     }
 
     // 大批量加载标记
-    private void loadPoints(){
+    private void loadPoints() {
 
         List<MapModel> items = new ArrayList<MapModel>();
 
@@ -214,11 +231,11 @@ public class MapActivity extends AppCompatActivity {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String result = response.body().string();
 
-                final JsonObject jsonObject  = JsonParser.parseString(result).getAsJsonObject();
-                if(jsonObject.get("code").getAsInt() == 1){
+                final JsonObject jsonObject = JsonParser.parseString(result).getAsJsonObject();
+                if (jsonObject.get("code").getAsInt() == 1) {
                     JsonArray data = jsonObject.get("data").getAsJsonArray();
 
-                    for(JsonElement point : data){
+                    for (JsonElement point : data) {
 
                         JsonObject sing_point = point.getAsJsonObject();
                         MapModel mapModel = new MapModel(
@@ -233,6 +250,7 @@ public class MapActivity extends AppCompatActivity {
                                 sing_point.get("sound_url").getAsString()
 
                         );
+
                         items.add(mapModel);
                     }
 
@@ -265,12 +283,12 @@ public class MapActivity extends AppCompatActivity {
                     public boolean onClusterClick(Cluster<MapModel> cluster) {
                         List<MapModel> items = (List<MapModel>) cluster.getItems();
                         LatLngBounds.Builder builder2 = new LatLngBounds.Builder();
-                        int i=0;
-                        for(MapModel myItem : items){
+                        int i = 0;
+                        for (MapModel myItem : items) {
                             builder2 = builder2.include(myItem.getPosition());
                         }
                         LatLngBounds latlngBounds = builder2.build();
-                        MapStatusUpdate u = MapStatusUpdateFactory.newLatLngBounds(latlngBounds,mMapView.getWidth(),mMapView.getHeight());
+                        MapStatusUpdate u = MapStatusUpdateFactory.newLatLngBounds(latlngBounds, mMapView.getWidth(), mMapView.getHeight());
                         mBaiduMap.animateMapStatus(u);
                         return false;
                     }
@@ -279,7 +297,7 @@ public class MapActivity extends AppCompatActivity {
                 new ClusterManager.OnClusterItemClickListener<MapModel>() {
                     @Override
                     public boolean onClusterItemClick(MapModel item) {
-                        if(item == current_model) return false;
+                        if (item == current_model) return false;
                         current_model = item;
                         loadSong(item);
                         return false;
@@ -290,7 +308,7 @@ public class MapActivity extends AppCompatActivity {
     /*
             加载歌曲
      */
-    private void loadSong(MapModel mapModel){
+    private void loadSong(MapModel mapModel) {
 //        if(mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN){
 //            mLayout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
 //        }
@@ -305,8 +323,8 @@ public class MapActivity extends AppCompatActivity {
         textView_place.setText(mapModel.getAddress());
         textView_content.setText(mapModel.getContent());
 
-        if(mediaPlayer != null){
-            if(mediaPlayer.isPlaying()) {
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) {
                 mediaPlayer.pause();
                 playPauseView.pause();
             }
@@ -336,11 +354,11 @@ public class MapActivity extends AppCompatActivity {
             }
         });
         try {
-            if(mapModel.getAudio_url() != null){
+            if (mapModel.getAudio_url() != null) {
                 mediaPlayer.setDataSource(mapModel.getAudio_url());
                 mediaPlayer.prepareAsync();
             }
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -352,7 +370,7 @@ public class MapActivity extends AppCompatActivity {
                 (mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
             mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         } else {
-            if(mediaPlayer != null && mediaPlayer.isPlaying()){
+            if (mediaPlayer != null && mediaPlayer.isPlaying()) {
                 mediaPlayer.pause();
                 playPauseView.pause();
             }
@@ -361,9 +379,9 @@ public class MapActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
-        if(mediaPlayer != null && mediaPlayer.isPlaying()){
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
             playPauseView.pause();
             //mediaPlayer.release();
@@ -392,4 +410,43 @@ public class MapActivity extends AppCompatActivity {
             }
         }
     };
+
+    /**
+     * 读取json路径
+     */
+    private String getCustomStyleFilePath(Context context, String customStyleFileName) {
+        FileOutputStream outputStream = null;
+        InputStream inputStream = null;
+        String parentPath = null;
+        try {
+            inputStream = context.getAssets().open(customStyleFileName);
+            byte[] buffer = new byte[inputStream.available()];
+            inputStream.read(buffer);
+            parentPath = context.getFilesDir().getAbsolutePath();
+            File customStyleFile = new File(parentPath + "/" + customStyleFileName);
+            if (customStyleFile.exists()) {
+                customStyleFile.delete();
+            }
+            customStyleFile.createNewFile();
+
+            outputStream = new FileOutputStream(customStyleFile);
+            outputStream.write(buffer);
+        } catch (IOException e) {
+            Log.e("Map-style", "Copy custom style file failed", e);
+        } finally {
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            } catch (IOException e) {
+                Log.e("Map-style", "Close stream failed", e);
+                return null;
+            }
+        }
+        return parentPath + "/" + customStyleFileName;
+    }
+
 }

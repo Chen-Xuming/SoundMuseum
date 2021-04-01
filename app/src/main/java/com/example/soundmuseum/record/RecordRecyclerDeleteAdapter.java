@@ -64,8 +64,8 @@ public class RecordRecyclerDeleteAdapter extends RecyclerView.Adapter<RecordRecy
         this.context = context;
         this.record_list = list;
 
-        drawable_play = ContextCompat.getDrawable(context, R.drawable.play);
-        drawable_pause = ContextCompat.getDrawable(context, R.drawable.pause);
+        drawable_play = ContextCompat.getDrawable(context, R.drawable.ic_play_white);
+        drawable_pause = ContextCompat.getDrawable(context, R.drawable.ic_pause_white);
 
         mediaPlayerUtils = new MediaPlayerUtils();
         mediaPlayerUtils.listener = this;

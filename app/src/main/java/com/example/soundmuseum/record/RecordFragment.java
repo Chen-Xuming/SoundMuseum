@@ -109,7 +109,7 @@ public class RecordFragment extends Fragment {
                         refreshData();
                         refreshLayout.finishRefreshing();
                     }
-                },1000);
+                },500);
             }
 
             @Override
@@ -121,7 +121,7 @@ public class RecordFragment extends Fragment {
                         loadMoreData();
                         refreshLayout.finishLoadmore();
                     }
-                },1000);
+                },500);
             }
         });
 
