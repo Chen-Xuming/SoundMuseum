@@ -31,7 +31,8 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity android:name=".formatConvert.FormatConvertActivity" />
         <activity android:name=".dbMeter.DBMeterActivity" />
-        <activity android:name=".fm.AudioFmActivity" />
+        <activity android:name=".fm.AudioFmActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name=".TestKotlinActivity" />
         <activity android:name=".map.MapActivity" /> <!-- 百度地图API -->
         <meta-data
@@ -64,11 +65,13 @@
         <activity
             android:name=".record.RecordActivity"
             android:theme="@style/SeachViewActivityTheme" />
-        <activity android:name=".UserCenterActivity" />
+        <activity android:name=".UserCenterActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
             android:name=".search.MySearchActivity"
             android:theme="@style/SeachViewActivityTheme" />
-        <activity android:name=".MyCenterActivity" />
+        <activity android:name=".MyCenterActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
             android:name=".SendActivity"
             android:theme="@style/CreateActivityTheme" />

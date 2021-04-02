@@ -74,8 +74,8 @@ public class SearchPositionActivity extends Activity implements AdapterView.OnIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_position);
 
-        StatusBarUtil.setColor(SearchPositionActivity.this, Color.parseColor("#393A3E"), 255);
-
+        //StatusBarUtil.setColor(SearchPositionActivity.this, Color.parseColor("#393A3E"), 255);
+        StatusBarUtil.setColor(SearchPositionActivity.this, Color.parseColor("#1b263b"), 0);
 
         current_city = getIntent().getStringExtra("current_city");
 

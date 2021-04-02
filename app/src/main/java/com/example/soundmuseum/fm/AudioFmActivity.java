@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -56,6 +57,9 @@ public class AudioFmActivity extends AppCompatActivity {
     private PlayPauseView fm_playPauseView;
     private ImageView fm_next_song;
 
+    private ImageView fm_background;
+    private ImageView fm_back;
+
     private AudioFmModel current_song = null;
 
     private MediaPlayer mediaPlayer;
@@ -67,7 +71,9 @@ public class AudioFmActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio_fm);
 
-        StatusBarUtil.setTranslucent(AudioFmActivity.this);
+        //StatusBarUtil.setTranslucent(AudioFmActivity.this);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
         fm_album_img = findViewById(R.id.fm_album_img);
         fm_title_text = findViewById(R.id.fm_title_text);
@@ -76,16 +82,31 @@ public class AudioFmActivity extends AppCompatActivity {
         fm_seekbar = findViewById(R.id.fm_seekbar);
         fm_playPauseView = findViewById(R.id.fm_play_pause_btn);
         fm_next_song = findViewById(R.id.fm_next_img);
+        fm_back = findViewById(R.id.fm_back);
+        fm_background = findViewById(R.id.fm_background);
 
         mHandler = new Handler();
 
         //////////// toolbar 初始化
-        Toolbar toolbar = (Toolbar) findViewById(R.id.fm_toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.fm_toolbar);
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setDisplayShowTitleEnabled(false);
+//
+//        // 点击返回箭头退出界面
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(mediaPlayer != null && mediaPlayer.isPlaying()){
+//                    mediaPlayer.pause();
+//                    //mediaPlayer.release();
+//                }
+//                finish();
+//            }
+//        });
+        /////////////////////
 
-        // 点击返回箭头退出界面
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+
+        fm_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(mediaPlayer != null && mediaPlayer.isPlaying()){
@@ -95,7 +116,6 @@ public class AudioFmActivity extends AppCompatActivity {
                 finish();
             }
         });
-        /////////////////////
 
         fm_playPauseView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,6 +134,7 @@ public class AudioFmActivity extends AppCompatActivity {
                 }
             }
         });
+        fm_playPauseView.setBgColor(Color.TRANSPARENT);
 
         /*
             进度条监听
@@ -230,11 +251,19 @@ public class AudioFmActivity extends AppCompatActivity {
 
         // 圆角图片
         RequestOptions options = new RequestOptions()
-                .transform(new RoundedCornersTransformation(20, 0));
+                .transform(new CropCircleWithBorderTransformation(5, Color.TRANSPARENT));
         Glide.with(this)
                 .load(current_song.getSong_album_image())
                 .apply(options)
                 .into(fm_album_img);
+
+        // 模糊背景图，模糊度15/25
+        RequestOptions options1 = new RequestOptions()
+                .transform(new BlurTransformation(80,4));
+        Glide.with(this)
+                .load(current_song.getSong_album_image())
+                .apply(options1)
+                .into(fm_background);
 
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setLooping(false);

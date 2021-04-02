@@ -13,6 +13,7 @@ import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ import com.example.soundmuseum.record.RecordActivity;
 import com.example.soundmuseum.util.UserManager;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.gyf.immersionbar.ImmersionBar;
 import com.jaeger.library.StatusBarUtil;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.leon.lib.settingview.LSettingItem;
@@ -36,6 +38,7 @@ import java.io.IOException;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import jp.wasabeef.glide.transformations.CropCircleWithBorderTransformation;
+import jp.wasabeef.glide.transformations.gpu.ContrastFilterTransformation;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -139,6 +142,9 @@ public class MyCenterActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
     }
 
     /*

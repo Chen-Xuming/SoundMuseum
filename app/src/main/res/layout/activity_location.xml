@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/ActionBarHeight"
-        android:background="@color/actionBarColor"
+        android:background="#1b263b"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -15,7 +15,7 @@
             android:id="@+id/fl_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/actionbar_img_selector">
+            android:background="#1b263b">
 
             <ImageView
                 android:layout_width="@dimen/ActionBarHeight"
@@ -37,7 +37,7 @@
             android:id="@+id/fl_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/actionbar_img_selector">
+            android:background="#1b263b">
 
             <ImageView
                 android:layout_width="@dimen/ActionBarHeight"

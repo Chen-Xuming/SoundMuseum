@@ -113,6 +113,8 @@ dependencies {
 
     implementation 'pub.devrel:easypermissions:2.0.1'   // 快速权限
 
+    implementation 'com.gyf.immersionbar:immersionbar:3.0.0' // 沉浸式
+
 
 }
 

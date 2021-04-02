@@ -13,7 +13,7 @@
         app:titleTextColor="#FFFFFF"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#1267B8"
+        android:background="#1b263b"
         app:navigationIcon="@drawable/ic_arrow_back_white_24dp" />
 
     <LinearLayout

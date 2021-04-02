@@ -133,7 +133,9 @@ public class LocationActivity extends Activity implements AdapterView.OnItemClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
 
-        StatusBarUtil.setColor(LocationActivity.this, Color.parseColor("#393A3E"), 255);
+        //StatusBarUtil.setColor(LocationActivity.this, Color.parseColor("#393A3E"), 255);
+        StatusBarUtil.setColor(LocationActivity.this, Color.parseColor("#1b263b"), 0);
+
 
         initUI();
     }

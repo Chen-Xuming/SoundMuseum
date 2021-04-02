@@ -52,7 +52,7 @@ public class FormatConvertActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_format_convert);
 
-        StatusBarUtil.setColor(this, Color.parseColor("#1267B8"), 100);
+        StatusBarUtil.setColor(this, Color.parseColor("#1b263b"), 0);
 
         //////////// toolbar 初始化
         Toolbar toolbar = (Toolbar) findViewById(R.id.convert_toolbar);

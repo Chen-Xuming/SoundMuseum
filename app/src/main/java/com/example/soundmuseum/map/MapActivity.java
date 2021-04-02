@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -86,7 +87,10 @@ public class MapActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        StatusBarUtil.setColor(MapActivity.this, Color.parseColor("#1b263b"));
+        //StatusBarUtil.setColor(MapActivity.this, Color.parseColor("#1b263b"));
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+
 
         textView_title = findViewById(R.id.map_title);
         seekbar = findViewById(R.id.map_seekbar);
